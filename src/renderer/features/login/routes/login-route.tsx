@@ -29,6 +29,7 @@ import {
     useCurrentServer,
     useServerList,
 } from '/@/renderer/store';
+import { logger } from '/@/renderer/utils/logger';
 import { Button } from '/@/shared/components/button/button';
 import { Center } from '/@/shared/components/center/center';
 import { Code } from '/@/shared/components/code/code';
@@ -218,9 +219,19 @@ const LoginRoute = () => {
                     });
                 }
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             setIsLoading(false);
-            return toast.error({ message: err?.message });
+            const message = err instanceof Error ? err.message : String(err);
+
+            logger.error('Server login failed', {
+                error: message,
+                serverType,
+                url: serverUrl,
+            });
+
+            return toast.error({
+                message: message || t('error.authenticationFailed'),
+            });
         }
 
         return setIsLoading(false);

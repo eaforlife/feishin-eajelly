@@ -1,5 +1,15 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to EAJelly Desktop are documented here.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## 1.0.0 - 2026-08-28
+
+- Set EAJelly as the built-in Jellyfin server.
+- Added `--server-override` to restore manual server configuration when needed.
+- Moved update checks and release links to the EAJelly GitHub repository.
+- Added Windows and macOS release workflows.
+- Added Windows migration from an existing Feishin installation.
+- Added a persistent cover-art mini player with native media controls and queue access.
+- Improved startup behavior and deferred nonessential work.
+- Added Jellyfin 12-compatible login response handling and authentication diagnostics.
+- Added EAJelly notices while preserving the GPL-3.0-only license and upstream attribution.

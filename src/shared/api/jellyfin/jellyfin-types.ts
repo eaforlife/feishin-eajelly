@@ -344,9 +344,19 @@ const authenticateParameters = z.object({
 
 const authenticate = z.object({
     AccessToken: z.string(),
-    ServerId: z.string(),
-    SessionInfo: sessionInfo,
-    User: user,
+    ServerId: z.string().nullish(),
+    SessionInfo: z.unknown().nullish(),
+    User: z
+        .object({
+            Id: z.string(),
+            Name: z.string().nullish(),
+            Policy: z
+                .object({
+                    IsAdministrator: z.boolean().nullish(),
+                })
+                .nullish(),
+        })
+        .passthrough(),
 });
 
 const genreItem = z.object({

@@ -78,7 +78,9 @@ class AppUpdater {
                 })
                 .catch((err) => log.error('Check for updates failed', err));
         } else {
-            autoUpdater.checkForUpdatesAndNotify();
+            autoUpdater
+                .checkForUpdatesAndNotify()
+                .catch((err) => log.error('Check for updates failed', err));
         }
     }
 }
