@@ -77,11 +77,18 @@ const MiniPlayerContent = () => {
     const volumeIcon = muted ? 'volumeMute' : volume > 50 ? 'volumeMax' : 'volumeNormal';
 
     return (
-        <div className={`${styles.root} ${queueVisible ? styles.withQueue : ''}`}>
+        <div
+            className={`${styles.root} ${queueVisible ? styles.withQueue : ''}`}
+            onMouseLeave={() => setVolumeVisible(false)}
+        >
             <div className={styles.cover}>
                 {showLyrics ? (
                     <div className={styles.lyrics}>
-                        <Lyrics fadeOutNoLyricsMessage={false} settingsKey="miniPlayer" />
+                        <Lyrics
+                            fadeOutNoLyricsMessage={false}
+                            settingsKey="miniPlayer"
+                            showControls={false}
+                        />
                     </div>
                 ) : imageUrl ? (
                     <img
@@ -181,7 +188,6 @@ const MiniPlayerContent = () => {
                         <Icon
                             fill={repeat === PlayerRepeat.NONE ? 'default' : 'primary'}
                             icon={repeat === PlayerRepeat.ONE ? 'mediaRepeatOne' : 'mediaRepeat'}
-                            size={22}
                         />
                     </button>
                     <button

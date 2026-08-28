@@ -2094,7 +2094,7 @@ const initialState: SettingsState = {
             gaplessAudio: 'weak',
             replayGainClip: true,
             replayGainFallbackDB: undefined,
-            replayGainMode: 'no',
+            replayGainMode: 'track',
             replayGainPreampDB: 0,
         },
         preservePitch: true,
@@ -2901,10 +2901,14 @@ export const useSettingsStore = createWithEqualityFn<SettingsSlice>()(
                     }
                 }
 
+                if (version < 34 && state.playback.mpvProperties.replayGainMode === 'no') {
+                    state.playback.mpvProperties.replayGainMode = 'track';
+                }
+
                 return persistedState;
             },
             name: 'store_settings',
-            version: 33,
+            version: 34,
         },
     ),
 );

@@ -166,14 +166,15 @@ let miniPlayerQueueVisible = false;
 
 const getMiniPlayerBounds = (queueVisible: boolean, referenceBounds: Rectangle): Rectangle => {
     const workArea = screen.getDisplayMatching(referenceBounds).workArea;
+    const displayPadding = 16;
     const height = Math.min(320, workArea.height);
     const width = Math.min(queueVisible ? 640 : 320, workArea.width);
 
     return {
         height,
         width,
-        x: workArea.x + workArea.width - width,
-        y: workArea.y + workArea.height - height,
+        x: Math.max(workArea.x, workArea.x + workArea.width - width - displayPadding),
+        y: Math.min(workArea.y + displayPadding, workArea.y + workArea.height - height),
     };
 };
 

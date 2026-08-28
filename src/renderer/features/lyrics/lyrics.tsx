@@ -53,9 +53,14 @@ import { LyricsOverride } from '/@/shared/types/domain-types';
 type LyricsProps = {
     fadeOutNoLyricsMessage?: boolean;
     settingsKey?: string;
+    showControls?: boolean;
 };
 
-export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' }: LyricsProps) => {
+export const Lyrics = ({
+    fadeOutNoLyricsMessage = true,
+    settingsKey = 'default',
+    showControls = true,
+}: LyricsProps) => {
     const currentSong = usePlayerSong();
     const isRadioActive = useIsRadioActive();
 
@@ -489,16 +494,18 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
     return (
         <ComponentErrorBoundary>
             <div className={styles.lyricsContainer}>
-                <ActionIcon
-                    className={styles.settingsIcon}
-                    icon="settings2"
-                    iconProps={{ size: 'lg' }}
-                    onClick={handleOpenSettings}
-                    pos="absolute"
-                    right={0}
-                    top={0}
-                    variant="subtle"
-                />
+                {showControls && (
+                    <ActionIcon
+                        className={styles.settingsIcon}
+                        icon="settings2"
+                        iconProps={{ size: 'lg' }}
+                        onClick={handleOpenSettings}
+                        pos="absolute"
+                        right={0}
+                        top={0}
+                        variant="subtle"
+                    />
+                )}
                 {isLoadingLyrics ? (
                     <Spinner container />
                 ) : (
@@ -549,28 +556,30 @@ export const Lyrics = ({ fadeOutNoLyricsMessage = true, settingsKey = 'default' 
                         )}
                     </AnimatePresence>
                 )}
-                <div className={styles.actionsContainer}>
-                    <LyricsActions
-                        hasLyrics={!!displayLyrics}
-                        index={indexToUse}
-                        languages={languages}
-                        offsetMs={displayOffsetMs}
-                        onExportLyrics={handleExportLyrics}
-                        onRemoveLyric={handleOnRemoveLyric}
-                        onSearchOverride={handleOnSearchOverride}
-                        onToggleOverlayLayer={handleToggleOverlayLayer}
-                        onTranslateLyric={
-                            translationApiProvider && translationApiKey
-                                ? handleOnTranslateLyric
-                                : undefined
-                        }
-                        onUpdateOffset={handleUpdateOffset}
-                        overlayLayers={overlayLayerToggles}
-                        setIndex={setIndex}
-                        settingsKey={settingsKey}
-                        visibleOverlayKeys={visibleOverlayKeys}
-                    />
-                </div>
+                {showControls && (
+                    <div className={styles.actionsContainer}>
+                        <LyricsActions
+                            hasLyrics={!!displayLyrics}
+                            index={indexToUse}
+                            languages={languages}
+                            offsetMs={displayOffsetMs}
+                            onExportLyrics={handleExportLyrics}
+                            onRemoveLyric={handleOnRemoveLyric}
+                            onSearchOverride={handleOnSearchOverride}
+                            onToggleOverlayLayer={handleToggleOverlayLayer}
+                            onTranslateLyric={
+                                translationApiProvider && translationApiKey
+                                    ? handleOnTranslateLyric
+                                    : undefined
+                            }
+                            onUpdateOffset={handleUpdateOffset}
+                            overlayLayers={overlayLayerToggles}
+                            setIndex={setIndex}
+                            settingsKey={settingsKey}
+                            visibleOverlayKeys={visibleOverlayKeys}
+                        />
+                    </div>
+                )}
             </div>
         </ComponentErrorBoundary>
     );
