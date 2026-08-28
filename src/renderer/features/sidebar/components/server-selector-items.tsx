@@ -33,6 +33,7 @@ export const ServerSelectorItems = () => {
     const navigate = useNavigate();
     const currentServer = useCurrentServer();
     const serverList = useServerList();
+    const serverLock = isServerLock();
     const { logout, setCurrentServer, setMusicFolderId } = useAuthStoreActions();
     const { isScanning, isWatching } = useScanStatus();
 
@@ -160,66 +161,70 @@ export const ServerSelectorItems = () => {
 
     return (
         <>
-            <DropdownMenu.Label>{t('page.appMenu.selectServer')}</DropdownMenu.Label>
-            {Object.values(serverList).map((server) => {
-                const isNavidromeExpired =
-                    server.type === ServerType.NAVIDROME && !server.ndCredential;
-                const isJellyfinExpired = server.type === ServerType.JELLYFIN && !server.credential;
-                const isSubsonicExpired = server.type === ServerType.SUBSONIC && !server.credential;
-                const isSessionExpired =
-                    isNavidromeExpired || isJellyfinExpired || isSubsonicExpired;
-
-                const logo =
-                    server.type === ServerType.NAVIDROME
-                        ? NavidromeLogo
-                        : server.type === ServerType.JELLYFIN
-                          ? JellyfinLogo
-                          : OpenSubsonicLogo;
-
-                return (
-                    <DropdownMenu.Item
-                        isSelected={currentServer?.id === server.id && !isSessionExpired}
-                        key={`server-${server.id}`}
-                        leftSection={<img src={logo} style={{ height: '1rem', width: '1rem' }} />}
-                        onClick={() => {
-                            if (isSessionExpired) {
-                                handleCredentialsModal(server);
-                            } else {
-                                handleSetCurrentServer(server);
-                            }
-                        }}
-                        rightSection={
-                            isSessionExpired ? <Icon icon="lock" /> : <Icon icon="arrowRight" />
-                        }
-                    >
-                        {server.name}
-                    </DropdownMenu.Item>
-                );
-            })}
-            {!isServerLock() && (
+            {!serverLock && (
                 <>
-                    <DropdownMenu.Divider />
+                    <DropdownMenu.Label>{t('page.appMenu.selectServer')}</DropdownMenu.Label>
+                    {Object.values(serverList).map((server) => {
+                        const isNavidromeExpired =
+                            server.type === ServerType.NAVIDROME && !server.ndCredential;
+                        const isJellyfinExpired =
+                            server.type === ServerType.JELLYFIN && !server.credential;
+                        const isSubsonicExpired =
+                            server.type === ServerType.SUBSONIC && !server.credential;
+                        const isSessionExpired =
+                            isNavidromeExpired || isJellyfinExpired || isSubsonicExpired;
+
+                        const logo =
+                            server.type === ServerType.NAVIDROME
+                                ? NavidromeLogo
+                                : server.type === ServerType.JELLYFIN
+                                  ? JellyfinLogo
+                                  : OpenSubsonicLogo;
+
+                        return (
+                            <DropdownMenu.Item
+                                isSelected={currentServer?.id === server.id && !isSessionExpired}
+                                key={`server-${server.id}`}
+                                leftSection={
+                                    <img src={logo} style={{ height: '1rem', width: '1rem' }} />
+                                }
+                                onClick={() => {
+                                    if (isSessionExpired) {
+                                        handleCredentialsModal(server);
+                                    } else {
+                                        handleSetCurrentServer(server);
+                                    }
+                                }}
+                                rightSection={
+                                    isSessionExpired ? (
+                                        <Icon icon="lock" />
+                                    ) : (
+                                        <Icon icon="arrowRight" />
+                                    )
+                                }
+                            >
+                                {server.name}
+                            </DropdownMenu.Item>
+                        );
+                    })}
                     <DropdownMenu.Item
                         leftSection={<Icon icon="edit" />}
                         onClick={handleManageServersModal}
                     >
                         {t('page.appMenu.manageServers')}
                     </DropdownMenu.Item>
-                    <DropdownMenu.Item
-                        leftSection={<Icon icon="refresh" />}
-                        onClick={handleRescanLibrary}
-                    >
-                        {t('page.appMenu.rescanLibrary')}
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item
-                        leftSection={<Icon color="error" icon="signOut" />}
-                        onClick={handleLogout}
-                    >
-                        {t('page.appMenu.logout')}
-                    </DropdownMenu.Item>
                 </>
             )}
-            {!isServerLock() && <></>}
+            <DropdownMenu.Divider />
+            <DropdownMenu.Item leftSection={<Icon icon="refresh" />} onClick={handleRescanLibrary}>
+                {t('page.appMenu.rescanLibrary')}
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+                leftSection={<Icon color="error" icon="signOut" />}
+                onClick={handleLogout}
+            >
+                {t('page.appMenu.logout')}
+            </DropdownMenu.Item>
             {musicFolders && musicFolders.items.length > 0 && (
                 <>
                     <DropdownMenu.Divider />

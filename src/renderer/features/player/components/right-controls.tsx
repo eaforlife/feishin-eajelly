@@ -1,4 +1,5 @@
 import { t } from 'i18next';
+import isElectron from 'is-electron';
 import { useCallback, useEffect, useMemo, useState, WheelEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -30,6 +31,7 @@ import {
     usePlayerData,
     usePlayerMuted,
     usePlayerSong,
+    usePlayerStatus,
     usePlayerVolume,
     useSetFullScreenPlayerStore,
     useSettingsStoreActions,
@@ -58,7 +60,9 @@ import { useMediaQuery } from '/@/shared/hooks/use-media-query';
 import { useThrottledCallback } from '/@/shared/hooks/use-throttled-callback';
 import { useThrottledValue } from '/@/shared/hooks/use-throttled-value';
 import { LibraryItem, QueueSong, ServerType } from '/@/shared/types/domain-types';
-import { PlayerType } from '/@/shared/types/types';
+import { PlayerStatus, PlayerType } from '/@/shared/types/types';
+
+const browser = isElectron() ? window.api.browser : null;
 
 const calculateVolumeUp = (volume: number, volumeWheelStep: number) => {
     let volumeToSet: number;
@@ -95,6 +99,7 @@ export const RightControls = () => {
             </Group>
             <Group align="center" gap="xs" wrap="nowrap">
                 <SleepTimerButton />
+                <MiniPlayerButton />
                 <PlayerConfig />
                 <LyricsButton />
                 {showFavorites && <FavoriteButton />}
@@ -103,6 +108,28 @@ export const RightControls = () => {
             </Group>
             <Group h="calc(100% / 3)" />
         </Flex>
+    );
+};
+
+const MiniPlayerButton = () => {
+    const { t } = useTranslation();
+    const currentSong = usePlayerSong();
+    const playerStatus = usePlayerStatus();
+
+    if (!isElectron() || !currentSong || playerStatus !== PlayerStatus.PLAYING) return null;
+
+    return (
+        <ActionIcon
+            icon="appWindow"
+            iconProps={{ size: 'lg' }}
+            onClick={(event) => {
+                event.stopPropagation();
+                browser?.setMiniPlayerMode(true);
+            }}
+            size="sm"
+            tooltip={{ label: t('player.miniPlayer'), openDelay: 0 }}
+            variant="subtle"
+        />
     );
 };
 

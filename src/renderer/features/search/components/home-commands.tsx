@@ -3,6 +3,7 @@ import { Dispatch, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createSearchParams, generatePath, useNavigate } from 'react-router';
 
+import { isServerLock } from '/@/renderer/features/action-required/utils/window-properties';
 import { openCreatePlaylistModal } from '/@/renderer/features/playlists/components/create-playlist-form';
 import { Command, CommandPalettePages } from '/@/renderer/features/search/components/command';
 import { AppRoute } from '/@/renderer/router/routes';
@@ -65,12 +66,14 @@ export const HomeCommands = ({
                 <Command.Item onSelect={() => setPages([...pages, CommandPalettePages.GO_TO])}>
                     {t('page.globalSearch.commands.goToPage')}...
                 </Command.Item>
-                <Command.Item
-                    onSelect={() => setPages([...pages, CommandPalettePages.MANAGE_SERVERS])}
-                >
-                    {t('page.globalSearch.commands.serverCommands')}
-                    ...
-                </Command.Item>
+                {!isServerLock() && (
+                    <Command.Item
+                        onSelect={() => setPages([...pages, CommandPalettePages.MANAGE_SERVERS])}
+                    >
+                        {t('page.globalSearch.commands.serverCommands')}
+                        ...
+                    </Command.Item>
+                )}
             </Command.Group>
         </>
     );

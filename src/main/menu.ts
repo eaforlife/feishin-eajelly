@@ -107,13 +107,17 @@ export default class MenuBuilder {
                     },
                     label: 'Settings...',
                 },
-                { type: 'separator' },
-                {
-                    click: () => {
-                        this.mainWindow.webContents.send('renderer-open-manage-servers');
-                    },
-                    label: 'Manage Servers...',
-                },
+                ...(process.env.SERVER_LOCK === 'true'
+                    ? []
+                    : [
+                          { type: 'separator' as const },
+                          {
+                              click: () => {
+                                  this.mainWindow.webContents.send('renderer-open-manage-servers');
+                              },
+                              label: 'Manage Servers...',
+                          },
+                      ]),
                 {
                     checked: privateMode,
                     click: () => {
@@ -192,7 +196,7 @@ export default class MenuBuilder {
                                   this.mainWindow.show();
                                   this.mainWindow.focus();
                               },
-                              label: 'Feishin',
+                              label: 'EAJelly',
                           },
                       ]
                     : undefined,
@@ -322,27 +326,37 @@ export default class MenuBuilder {
             submenu: [
                 {
                     click() {
-                        shell.openExternal('https://github.com/jeffvli/feishin');
+                        shell.openExternal('https://github.com/eaforlife/feishin-eajelly');
                     },
                     label: 'Learn More',
                 },
                 {
                     click() {
                         shell.openExternal(
-                            'https://github.com/jeffvli/feishin?tab=readme-ov-file#getting-started',
+                            'https://github.com/eaforlife/feishin-eajelly?tab=readme-ov-file#getting-started',
                         );
                     },
                     label: 'Documentation',
                 },
                 {
                     click() {
-                        shell.openExternal('https://github.com/jeffvli/feishin/discussions');
+                        shell.openExternal(
+                            'https://github.com/eaforlife/feishin-eajelly/blob/main/NOTICE',
+                        );
+                    },
+                    label: 'License and Notice',
+                },
+                {
+                    click() {
+                        shell.openExternal(
+                            'https://github.com/eaforlife/feishin-eajelly/discussions',
+                        );
                     },
                     label: 'Community Discussions',
                 },
                 {
                     click() {
-                        shell.openExternal('https://github.com/jeffvli/feishin/issues');
+                        shell.openExternal('https://github.com/eaforlife/feishin-eajelly/issues');
                     },
                     label: 'Search Issues',
                 },
@@ -439,27 +453,39 @@ export default class MenuBuilder {
                 submenu: [
                     {
                         click() {
-                            shell.openExternal('https://github.com/jeffvli/feishin');
+                            shell.openExternal('https://github.com/eaforlife/feishin-eajelly');
                         },
                         label: 'Learn More',
                     },
                     {
                         click() {
                             shell.openExternal(
-                                'https://github.com/jeffvli/feishin?tab=readme-ov-file#getting-started',
+                                'https://github.com/eaforlife/feishin-eajelly?tab=readme-ov-file#getting-started',
                             );
                         },
                         label: 'Documentation',
                     },
                     {
                         click() {
-                            shell.openExternal('https://github.com/jeffvli/feishin/discussions');
+                            shell.openExternal(
+                                'https://github.com/eaforlife/feishin-eajelly/blob/main/NOTICE',
+                            );
+                        },
+                        label: 'License and Notice',
+                    },
+                    {
+                        click() {
+                            shell.openExternal(
+                                'https://github.com/eaforlife/feishin-eajelly/discussions',
+                            );
                         },
                         label: 'Community Discussions',
                     },
                     {
                         click() {
-                            shell.openExternal('https://github.com/jeffvli/feishin/issues');
+                            shell.openExternal(
+                                'https://github.com/eaforlife/feishin-eajelly/issues',
+                            );
                         },
                         label: 'Search Issues',
                     },

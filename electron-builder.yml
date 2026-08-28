@@ -1,5 +1,5 @@
-appId: org.jeffvli.feishin
-productName: Feishin
+appId: xyz.eajelly.desktop
+productName: EAJelly
 artifactName: ${productName}-${version}-${os}-${arch}.${ext}
 electronVersion: 43.4.1
 directories:
@@ -9,6 +9,8 @@ files:
     - 'package.json'
 extraResources:
     - assets/**
+    - LICENSE
+    - NOTICE
 asarUnpack:
     - resources/**
 win:
@@ -25,6 +27,8 @@ win:
 
 nsis:
     allowToChangeInstallationDirectory: true
+    include: build/installer.nsh
+    license: LICENSE
     oneClick: false
     shortcutName: ${productName}
     uninstallDisplayName: ${productName}
@@ -47,8 +51,8 @@ mac:
     gatekeeperAssess: false
     notarize: false
     extendInfo:
-        NSAudioCaptureUsageDescription: 'System audio access is required for mpv visualizer capture in Feishin'
-        NSLocalNetworkUsageDescription: 'Local network is necessary for accessing servers hosted on the same system as Feishin'
+        NSAudioCaptureUsageDescription: 'System audio access is required for mpv visualizer capture in EAJelly'
+        NSLocalNetworkUsageDescription: 'Local network access is used to connect EAJelly to media servers'
 
 dmg:
     contents: [{ x: 130, y: 220 }, { x: 410, y: 220, type: link, path: /Applications }]
@@ -69,7 +73,7 @@ npmRebuild: false
 afterAllArtifactBuild: scripts/after-all-artifact-build.mjs
 publish:
     provider: github
-    owner: jeffvli
-    repo: feishin
+    owner: eaforlife
+    repo: feishin-eajelly
     channel: latest
     releaseType: draft

@@ -30,6 +30,7 @@ import { WebAudio } from '/@/shared/types/types';
 import '/@/shared/styles/global.css';
 import { PlayerProvider } from '/@/renderer/features/player/context/player-context';
 import { AudioPlayers } from '/@/renderer/features/player/components/audio-players';
+import { MiniPlayer } from '/@/renderer/features/player/components/mini-player';
 import { ReleaseNotesModal } from '/@/renderer/release-notes-modal';
 
 const UpdateAvailableDialog = lazy(() =>
@@ -101,6 +102,7 @@ const AppShell = memo(function AppShell() {
                 <PlayerProvider>
                     <AudioPlayers />
                     <AppRouter />
+                    <MiniPlayer />
                 </PlayerProvider>
             </WebAudioContext.Provider>
             <ReleaseNotesModal />

@@ -11,6 +11,7 @@ import {
     normalizeServerUrl,
 } from '/@/renderer/features/action-required/utils/server-lock';
 import {
+    getServerConfig,
     isLegacyAuth,
     isServerLock,
 } from '/@/renderer/features/action-required/utils/window-properties';
@@ -64,11 +65,9 @@ const LoginRoute = () => {
     const serverList = useServerList();
 
     // Check if server lock is configured
+    const { name: serverName, remoteUrl, type, url: serverUrl } = getServerConfig();
     const serverLock = isServerLock();
-    const serverType = window.SERVER_TYPE ? toServerType(window.SERVER_TYPE) : null;
-    const serverName = window.SERVER_NAME || '';
-    const serverUrl = window.SERVER_URL || '';
-    const remoteUrl = window.REMOTE_URL || '';
+    const serverType = type ? toServerType(type) : null;
     const legacyAuth = serverLock && isLegacyAuth();
 
     const config = [

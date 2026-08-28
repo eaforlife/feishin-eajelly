@@ -162,7 +162,7 @@ export const WindowBar = () => {
         const privateModeString = privateMode ? t('page.windowBar.privateMode') : '';
 
         if (!windowBarTrackinfo) {
-            return `Feishin${privateMode ? ` ${privateModeString}` : ''}`;
+            return `EAJelly${privateMode ? ` ${privateModeString}` : ''}`;
         }
 
         // Show radio information if radio is active
@@ -174,15 +174,15 @@ export const WindowBar = () => {
             let radioMetadata = '';
             if (metadata) {
                 if (metadata.title && metadata.artist) {
-                    radioMetadata = ` — ${metadata.artist} — ${metadata.title}`;
+                    radioMetadata = ` - ${metadata.artist} - ${metadata.title}`;
                 } else if (metadata.title) {
-                    radioMetadata = ` — ${metadata.title}`;
+                    radioMetadata = ` - ${metadata.title}`;
                 } else if (metadata.artist) {
-                    radioMetadata = ` — ${metadata.artist}`;
+                    radioMetadata = ` - ${metadata.artist}`;
                 }
             }
 
-            return `${radioStatusString}${radioTitle}${radioMetadata} — Feishin${privateMode ? ` ${privateModeString}` : ''}`;
+            return `${radioStatusString}${radioTitle}${radioMetadata} - EAJelly${privateMode ? ` ${privateModeString}` : ''}`;
         }
 
         // Show regular song information
@@ -190,8 +190,8 @@ export const WindowBar = () => {
         const queueString = queueLength ? `(${index + 1} / ${queueLength}) ` : '';
         const title = `${
             queueLength
-                ? `${statusString}${queueString}${currentSong?.name}${currentSong?.artistName ? ` — ${currentSong?.artistName} — Feishin` : ''}`
-                : 'Feishin'
+                ? `${statusString}${queueString}${currentSong?.name}${currentSong?.artistName ? ` - ${currentSong?.artistName} - EAJelly` : ''}`
+                : 'EAJelly'
         }${privateMode ? ` ${privateModeString}` : ''}`;
         return title;
     }, [

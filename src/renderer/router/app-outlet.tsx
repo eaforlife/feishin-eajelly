@@ -3,7 +3,10 @@ import { Navigate, Outlet } from 'react-router';
 import { shallow } from 'zustand/shallow';
 
 import { normalizeServerUrl } from '/@/renderer/features/action-required/utils/server-lock';
-import { isServerLock } from '/@/renderer/features/action-required/utils/window-properties';
+import {
+    getServerConfig,
+    isServerLock,
+} from '/@/renderer/features/action-required/utils/window-properties';
 import { AppRoute } from '/@/renderer/router/routes';
 import { useAuthStore, useAuthStoreActions } from '/@/renderer/store';
 import { ServerType } from '/@/shared/types/domain-types';
@@ -23,17 +26,18 @@ export const AppOutlet = () => {
         shallow,
     );
     const { setCurrentServer, updateServer } = useAuthStoreActions();
+    const { url: serverUrl } = getServerConfig();
 
     const hasServerLockMismatch = useMemo(() => {
-        if (!isServerLock() || !currentServer || !window.SERVER_URL) {
+        if (!isServerLock() || !currentServer || !serverUrl) {
             return false;
         }
 
-        const configuredUrl = normalizeServerUrl(window.SERVER_URL);
+        const configuredUrl = normalizeServerUrl(serverUrl);
         const persistedUrl = normalizeServerUrl(currentServer.url);
 
         return configuredUrl !== persistedUrl;
-    }, [currentServer]);
+    }, [currentServer, serverUrl]);
 
     const hasMissingCredentials = Boolean(
         currentServer &&
@@ -42,13 +46,13 @@ export const AppOutlet = () => {
     );
 
     useEffect(() => {
-        if (hasServerLockMismatch && currentServer && window.SERVER_URL) {
+        if (hasServerLockMismatch && currentServer && serverUrl) {
             updateServer(currentServer.id, {
-                url: normalizeServerUrl(window.SERVER_URL),
+                url: normalizeServerUrl(serverUrl),
             });
             setCurrentServer(null);
         }
-    }, [currentServer, hasServerLockMismatch, setCurrentServer, updateServer]);
+    }, [currentServer, hasServerLockMismatch, serverUrl, setCurrentServer, updateServer]);
 
     // Clear selection when credentials were wiped but currentServer was left set
     useEffect(() => {

@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 jobs:
     publish:
+        if: github.ref == 'refs/heads/main'
         runs-on: ${{ matrix.os }}
 
         strategy:

@@ -1,0 +1,21 @@
+EAJelly Desktop
+Copyright (C) 2026 eaforlife
+
+This is a modified version of Feishin, originally created by Jeff Vlietinck
+and other Feishin contributors. The original project is available at:
+https://github.com/jeffvli/feishin
+
+EAJelly Desktop was modified in 2026 by eaforlife.
+
+EAJelly Desktop is distributed under the GNU General Public License version 3.
+The complete license text is included in LICENSE. Source code for this modified
+version is available at:
+https://github.com/eaforlife/feishin-eajelly
+
+This modified distribution is not endorsed by or affiliated with the upstream
+Feishin project. EAJelly Desktop and its contributors provide the software
+without warranty, as described in the GNU General Public License.
+
+By default, this build connects to http://eajelly.xyz. Unless that endpoint
+redirects to HTTPS, credentials and media traffic may cross the network without
+transport encryption. Use --server-override to select another server.

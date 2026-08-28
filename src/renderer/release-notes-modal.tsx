@@ -9,6 +9,7 @@ import packageJson from '../../package.json';
 
 import {
     GITHUB_RELEASES_URL,
+    GITHUB_REPOSITORY_URL,
     type GitHubRelease,
     parseVersionFromTag,
     RELEASES_TO_FETCH,
@@ -27,7 +28,7 @@ import { Stack } from '/@/shared/components/stack/stack';
 import { Text } from '/@/shared/components/text/text';
 import { useLocalStorage } from '/@/shared/hooks/use-local-storage';
 
-const GITHUB_COMPARE_URL = 'https://api.github.com/repos/jeffvli/feishin/compare';
+const GITHUB_COMPARE_URL = 'https://api.github.com/repos/eaforlife/feishin-eajelly/compare';
 
 interface GitHubCompareCommit {
     commit: {
@@ -80,7 +81,7 @@ const ReleaseNotesContent = ({ onDismiss, version }: ReleaseNotesContentProps) =
         return options;
     }, [releasesList, version]);
 
-    // For alpha: fetch commits between latest stable and development branch
+    // For alpha: fetch commits between latest stable and the main branch
     const {
         data: compareData,
         isError: isCompareError,
@@ -89,14 +90,14 @@ const ReleaseNotesContent = ({ onDismiss, version }: ReleaseNotesContentProps) =
         enabled: isAlpha && !!latestStableRelease,
         queryFn: async () => {
             const base = latestStableRelease!.tag_name;
-            const head = 'development';
+            const head = 'main';
             const response = await axios.get<GitHubCompareResponse>(
                 `${GITHUB_COMPARE_URL}/${base}...${head}`,
                 { params: { per_page: 100 } },
             );
             return response.data;
         },
-        queryKey: ['github-compare', latestStableRelease?.tag_name, 'development'],
+        queryKey: ['github-compare', latestStableRelease?.tag_name, 'main'],
         retry: 2,
     });
 
@@ -196,8 +197,8 @@ const ReleaseNotesContent = ({ onDismiss, version }: ReleaseNotesContentProps) =
                         component="a"
                         href={
                             showCompareError
-                                ? `https://github.com/jeffvli/feishin/compare/${latestStableRelease.tag_name}...${toTag(selectedVersion)}`
-                                : `https://github.com/jeffvli/feishin/releases/tag/${toTag(selectedVersion)}`
+                                ? `${GITHUB_REPOSITORY_URL}/compare/${latestStableRelease.tag_name}...${toTag(selectedVersion)}`
+                                : `${GITHUB_REPOSITORY_URL}/releases/tag/${toTag(selectedVersion)}`
                         }
                         onClick={onDismiss}
                         rightSection={<Icon icon="externalLink" />}
@@ -230,7 +231,7 @@ const ReleaseNotesContent = ({ onDismiss, version }: ReleaseNotesContentProps) =
                 <Group justify="flex-end">
                     <Button
                         component="a"
-                        href={`https://github.com/jeffvli/feishin/releases/tag/${toTag(selectedVersion)}`}
+                        href={`${GITHUB_REPOSITORY_URL}/releases/tag/${toTag(selectedVersion)}`}
                         onClick={onDismiss}
                         rightSection={<Icon icon="externalLink" />}
                         target="_blank"
@@ -248,7 +249,7 @@ const ReleaseNotesContent = ({ onDismiss, version }: ReleaseNotesContentProps) =
 
     if (isAlpha && compareData) {
         const commits = compareData.commits ?? [];
-        const compareUrl = `https://github.com/jeffvli/feishin/compare/${latestStableRelease?.tag_name}...development`;
+        const compareUrl = `${GITHUB_REPOSITORY_URL}/compare/${latestStableRelease?.tag_name}...main`;
         return (
             <Stack gap="md">
                 {releaseOptions.length > 1 && (
@@ -355,7 +356,7 @@ const ReleaseNotesContent = ({ onDismiss, version }: ReleaseNotesContentProps) =
             <Group justify="flex-end">
                 <Button
                     component="a"
-                    href={`https://github.com/jeffvli/feishin/releases/tag/${toTag(selectedVersion)}`}
+                    href={`${GITHUB_REPOSITORY_URL}/releases/tag/${toTag(selectedVersion)}`}
                     onClick={onDismiss}
                     rightSection={<Icon icon="externalLink" />}
                     target="_blank"

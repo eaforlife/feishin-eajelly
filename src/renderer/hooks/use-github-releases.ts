@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const GITHUB_RELEASES_URL = 'https://api.github.com/repos/jeffvli/feishin/releases';
+export const GITHUB_REPOSITORY_URL = 'https://github.com/eaforlife/feishin-eajelly';
+export const GITHUB_RELEASES_URL =
+    'https://api.github.com/repos/eaforlife/feishin-eajelly/releases';
 export const RELEASES_TO_FETCH = 30;
 
 export interface GitHubRelease {
@@ -34,6 +36,7 @@ export const useGithubReleasesList = (perPage = RELEASES_TO_FETCH) => {
 };
 
 export const useGithubLatestRelease = (options?: {
+    enabled?: boolean;
     refetchInterval?: number;
     refetchIntervalInBackground?: boolean;
 }) => {

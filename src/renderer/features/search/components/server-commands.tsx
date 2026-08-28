@@ -43,6 +43,8 @@ export const ServerCommands = ({ handleClose, setPages, setQuery }: ServerComman
         [handleClose, navigate, setCurrentServer, setPages, setQuery],
     );
 
+    if (isServerLock()) return null;
+
     return (
         <>
             <Command.Group heading={t('page.appMenu.selectServer')}>
@@ -53,13 +55,11 @@ export const ServerCommands = ({ handleClose, setPages, setQuery }: ServerComman
                     >{`${serverList[key].name}...`}</Command.Item>
                 ))}
             </Command.Group>
-            {!isServerLock() && (
-                <Command.Group heading={t('common.manage')}>
-                    <Command.Item onSelect={handleManageServersModal}>
-                        {t('page.appMenu.manageServers')}...
-                    </Command.Item>
-                </Command.Group>
-            )}
+            <Command.Group heading={t('common.manage')}>
+                <Command.Item onSelect={handleManageServersModal}>
+                    {t('page.appMenu.manageServers')}...
+                </Command.Item>
+            </Command.Group>
             <Command.Separator />
         </>
     );

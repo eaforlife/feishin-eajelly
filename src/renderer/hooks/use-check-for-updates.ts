@@ -1,3 +1,4 @@
+import isElectron from 'is-electron';
 import { useEffect } from 'react';
 
 import { parseVersionFromTag, useGithubLatestRelease } from '/@/renderer/hooks/use-github-releases';
@@ -10,6 +11,7 @@ export const useCheckForUpdates = () => {
     const setLatestVersion = useAppStore((state) => state.actions.setLatestVersion);
 
     const query = useGithubLatestRelease({
+        enabled: !isElectron(),
         refetchInterval: CHECK_FOR_UPDATES_INTERVAL_MS,
         refetchIntervalInBackground: true,
     });
