@@ -27,6 +27,13 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'Added a compact volume control with mute and a slider.',
         'Made the repeat and repeat-one controls heavier and easier to see.',
     ],
+    '1.0.2': [
+        'The mini player is now a DPI-aware 420-pixel square positioned at the top-right.',
+        'Queue, cover art, and lyrics now share one frame and display one at a time.',
+        'Mini-player lyrics no longer expose editing controls or pointer interactions.',
+        'Exit and playback controls now share fade behavior, and the volume popup closes automatically.',
+        'ReplayGain track mode is enabled by default for tagged Jellyfin audio.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

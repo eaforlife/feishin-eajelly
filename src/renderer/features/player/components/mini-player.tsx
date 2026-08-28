@@ -77,12 +77,34 @@ const MiniPlayerContent = () => {
     const volumeIcon = muted ? 'volumeMute' : volume > 50 ? 'volumeMax' : 'volumeNormal';
 
     return (
-        <div
-            className={`${styles.root} ${queueVisible ? styles.withQueue : ''}`}
-            onMouseLeave={() => setVolumeVisible(false)}
-        >
+        <div className={styles.root} onMouseLeave={() => setVolumeVisible(false)}>
             <div className={styles.cover}>
-                {showLyrics ? (
+                {queueVisible ? (
+                    <section className={styles.queue}>
+                        <h2 className={styles.heading}>{t('player.queue')}</h2>
+                        <ol className={styles['queue-list']}>
+                            {queue.map((song, index) => {
+                                const isCurrent = song._uniqueId === currentSong?._uniqueId;
+
+                                return (
+                                    <li key={song._uniqueId}>
+                                        <button
+                                            aria-current={isCurrent ? 'true' : undefined}
+                                            className={styles['queue-item']}
+                                            onClick={() => mediaPlayByIndex(index)}
+                                            type="button"
+                                        >
+                                            <span className={styles['song-name']}>{song.name}</span>
+                                            <span className={styles['artist-name']}>
+                                                {song.artistName}
+                                            </span>
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ol>
+                    </section>
+                ) : showLyrics ? (
                     <div className={styles.lyrics}>
                         <Lyrics
                             fadeOutNoLyricsMessage={false}
@@ -195,7 +217,16 @@ const MiniPlayerContent = () => {
                         aria-pressed={showLyrics}
                         className={styles.control}
                         disabled={!currentSong}
-                        onClick={() => setShowLyrics((visible) => !visible)}
+                        onClick={async () => {
+                            if (queueVisible) {
+                                await browser?.setMiniPlayerQueueVisible(false);
+                                setQueueVisible(false);
+                                setShowLyrics(true);
+                                return;
+                            }
+
+                            setShowLyrics((visible) => !visible);
+                        }}
                         title={t('player.lyrics')}
                         type="button"
                     >
@@ -226,32 +257,6 @@ const MiniPlayerContent = () => {
                     </button>
                 </div>
             </div>
-            {queueVisible && (
-                <section className={styles.queue}>
-                    <h2 className={styles.heading}>{t('player.queue')}</h2>
-                    <ol className={styles['queue-list']}>
-                        {queue.map((song, index) => {
-                            const isCurrent = song._uniqueId === currentSong?._uniqueId;
-
-                            return (
-                                <li key={song._uniqueId}>
-                                    <button
-                                        aria-current={isCurrent ? 'true' : undefined}
-                                        className={styles['queue-item']}
-                                        onClick={() => mediaPlayByIndex(index)}
-                                        type="button"
-                                    >
-                                        <span className={styles['song-name']}>{song.name}</span>
-                                        <span className={styles['artist-name']}>
-                                            {song.artistName}
-                                        </span>
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ol>
-                </section>
-            )}
         </div>
     );
 };

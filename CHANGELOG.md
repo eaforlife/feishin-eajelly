@@ -2,6 +2,14 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.0.2 - 2026-08-29
+
+- Enlarged the mini player to a DPI-aware 420-pixel square with a top-right display inset.
+- Made the queue replace the cover or lyrics within the same frame instead of widening the window.
+- Hid inherited lyric editing controls and disabled lyric pointer interactions in mini-player mode.
+- Unified the exit and playback control fade behavior, normalized control sizing, and closed the volume popup on pointer exit.
+- Enabled ReplayGain track mode by default and migrated existing profiles so tagged Jellyfin audio is normalized.
+
 ## 1.0.1 - 2026-08-28
 
 - Anchored the mini player to the lower-right and made its queue expand left within the active display.

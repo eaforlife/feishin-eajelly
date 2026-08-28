@@ -8,14 +8,11 @@
     background: #000;
 }
 
-.with-queue {
-    grid-template-columns: 320px 1fr;
-}
-
 .cover {
     -webkit-app-region: drag;
     position: relative;
     min-width: 0;
+    height: 100%;
     overflow: hidden;
 }
 
@@ -49,7 +46,7 @@
     position: absolute;
     top: 8px;
     right: 8px;
-    z-index: 1;
+    z-index: 2;
     display: grid;
     place-items: center;
     width: 32px;
@@ -65,16 +62,11 @@
     -webkit-app-region: no-drag;
 }
 
-.root:hover .restore,
-.restore:focus-visible {
-    opacity: 1;
-}
-
 .volume-panel {
     position: absolute;
     bottom: 64px;
     left: 50%;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     align-items: center;
     width: 210px;
@@ -118,7 +110,7 @@
     position: absolute;
     bottom: 12px;
     left: 50%;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     gap: 4px;
     padding: 6px;
@@ -130,10 +122,8 @@
     -webkit-app-region: no-drag;
 }
 
-.root:hover .controls,
-.controls:focus-within,
-.root:hover .volume-panel,
-.volume-panel:focus-within {
+.root:hover :is(.restore, .controls, .volume-panel),
+.root:focus-within :is(.restore, .controls, .volume-panel) {
     opacity: 1;
 }
 
@@ -165,7 +155,9 @@
 }
 
 .queue {
+    width: 100%;
     min-width: 0;
+    height: 100%;
     min-height: 0;
     color: var(--theme-colors-foreground);
     background: var(--theme-colors-surface);
@@ -185,8 +177,10 @@
 }
 
 .queue-list {
+    -webkit-app-region: no-drag;
+    box-sizing: border-box;
     height: calc(100% - 44px);
-    padding: 0;
+    padding: 0 0 64px;
     margin: 0;
     overflow-y: auto;
     list-style: none;

@@ -164,11 +164,13 @@ let miniPlayerBounds: null | Rectangle = null;
 let miniPlayerMode = false;
 let miniPlayerQueueVisible = false;
 
-const getMiniPlayerBounds = (queueVisible: boolean, referenceBounds: Rectangle): Rectangle => {
+const MINI_PLAYER_SIZE = 420;
+
+const getMiniPlayerBounds = (referenceBounds: Rectangle): Rectangle => {
     const workArea = screen.getDisplayMatching(referenceBounds).workArea;
     const displayPadding = 16;
-    const height = Math.min(320, workArea.height);
-    const width = Math.min(queueVisible ? 640 : 320, workArea.width);
+    const height = Math.min(MINI_PLAYER_SIZE, workArea.height);
+    const width = Math.min(MINI_PLAYER_SIZE, workArea.width);
 
     return {
         height,
@@ -522,13 +524,14 @@ async function createWindow(first = true): Promise<void> {
         if (enabled) {
             miniPlayerBounds = mainWindow.getNormalBounds();
             miniPlayerQueueVisible = false;
+            const bounds = getMiniPlayerBounds(miniPlayerBounds);
             mainWindow.unmaximize();
             mainWindow.setFullScreen(false);
-            mainWindow.setMinimumSize(320, 320);
+            mainWindow.setMinimumSize(bounds.width, bounds.height);
             mainWindow.setResizable(false);
             mainWindow.setAlwaysOnTop(true, 'floating');
             mainWindow.setAspectRatio(0);
-            mainWindow.setBounds(getMiniPlayerBounds(false, miniPlayerBounds));
+            mainWindow.setBounds(bounds);
         } else {
             mainWindow.setAspectRatio(0);
             mainWindow.setAlwaysOnTop(false);
@@ -547,7 +550,6 @@ async function createWindow(first = true): Promise<void> {
         if (!mainWindow || !miniPlayerMode) return false;
 
         miniPlayerQueueVisible = visible;
-        mainWindow.setBounds(getMiniPlayerBounds(visible, mainWindow.getBounds()));
         return miniPlayerQueueVisible;
     });
 
