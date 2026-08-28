@@ -40,6 +40,7 @@ import {
     resolveWindowBounds,
 } from '/@/main/utils/window-bounds';
 import { PlayerRepeat, PlayerStatus, PlayerType, TitleTheme } from '/@/shared/types/types';
+import { EAJELLY_SERVER_URL } from '/@/shared/utils/eajelly-server';
 
 const GITHUB_UPDATER_CONFIG = {
     owner: 'eaforlife',
@@ -126,7 +127,7 @@ Object.assign(
               SERVER_LOCK: 'true',
               SERVER_NAME: 'EAJelly',
               SERVER_TYPE: 'jellyfin',
-              SERVER_URL: 'http://eajelly.xyz',
+              SERVER_URL: EAJELLY_SERVER_URL,
           },
 );
 
@@ -161,6 +162,20 @@ let currentSidebarCollapsed = false;
 let currentShuffleEnabled = false;
 let miniPlayerBounds: null | Rectangle = null;
 let miniPlayerMode = false;
+let miniPlayerQueueVisible = false;
+
+const getMiniPlayerBounds = (queueVisible: boolean, referenceBounds: Rectangle): Rectangle => {
+    const workArea = screen.getDisplayMatching(referenceBounds).workArea;
+    const height = Math.min(320, workArea.height);
+    const width = Math.min(queueVisible ? 640 : 320, workArea.width);
+
+    return {
+        height,
+        width,
+        x: workArea.x,
+        y: workArea.y + workArea.height - height,
+    };
+};
 
 app.on('before-quit', () => {
     if (isMacOS()) {
@@ -505,18 +520,14 @@ async function createWindow(first = true): Promise<void> {
 
         if (enabled) {
             miniPlayerBounds = mainWindow.getNormalBounds();
+            miniPlayerQueueVisible = false;
             mainWindow.unmaximize();
             mainWindow.setFullScreen(false);
-            mainWindow.setMinimumSize(640, 320);
+            mainWindow.setMinimumSize(320, 320);
             mainWindow.setResizable(false);
             mainWindow.setAlwaysOnTop(true, 'floating');
-            mainWindow.setAspectRatio(2);
-            mainWindow.setBounds({
-                height: 320,
-                width: 640,
-                x: miniPlayerBounds.x + miniPlayerBounds.width - 640,
-                y: miniPlayerBounds.y + miniPlayerBounds.height - 320,
-            });
+            mainWindow.setAspectRatio(0);
+            mainWindow.setBounds(getMiniPlayerBounds(false, miniPlayerBounds));
         } else {
             mainWindow.setAspectRatio(0);
             mainWindow.setAlwaysOnTop(false);
@@ -529,6 +540,14 @@ async function createWindow(first = true): Promise<void> {
         miniPlayerMode = enabled;
         mainWindow.webContents.send('window-mini-player-changed', enabled);
         return miniPlayerMode;
+    });
+
+    ipcMain.handle('window-mini-player-queue-set', (_event, visible: boolean) => {
+        if (!mainWindow || !miniPlayerMode) return false;
+
+        miniPlayerQueueVisible = visible;
+        mainWindow.setBounds(getMiniPlayerBounds(visible, mainWindow.getBounds()));
+        return miniPlayerQueueVisible;
     });
 
     ipcMain.on('window-quit', () => {
@@ -641,8 +660,10 @@ async function createWindow(first = true): Promise<void> {
         ipcMain.removeHandler('window-clear-cache');
         ipcMain.removeHandler('app-check-for-updates');
         ipcMain.removeHandler('window-mini-player-set');
+        ipcMain.removeHandler('window-mini-player-queue-set');
         miniPlayerBounds = null;
         miniPlayerMode = false;
+        miniPlayerQueueVisible = false;
         mainWindow = null;
     });
 

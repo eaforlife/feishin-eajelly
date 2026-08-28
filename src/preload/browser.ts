@@ -32,6 +32,10 @@ const setMiniPlayerMode = (enabled: boolean): Promise<boolean> => {
     return ipcRenderer.invoke('window-mini-player-set', enabled);
 };
 
+const setMiniPlayerQueueVisible = (visible: boolean): Promise<boolean> => {
+    return ipcRenderer.invoke('window-mini-player-queue-set', visible);
+};
+
 const miniPlayerModeListener = (cb: (enabled: boolean) => void) => {
     const listener = (_event: IpcRendererEvent, enabled: boolean) => cb(enabled);
     ipcRenderer.on('window-mini-player-changed', listener);
@@ -50,6 +54,7 @@ export const browser = {
     miniPlayerModeListener,
     quit,
     setMiniPlayerMode,
+    setMiniPlayerQueueVisible,
     unmaximize,
 };
 

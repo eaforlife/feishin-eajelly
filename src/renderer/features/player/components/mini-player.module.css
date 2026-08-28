@@ -3,9 +3,13 @@
     inset: 0;
     z-index: 100000;
     display: grid;
-    grid-template-columns: 320px 1fr;
+    grid-template-columns: 1fr;
     overflow: hidden;
     background: #000;
+}
+
+.with-queue {
+    grid-template-columns: 320px 1fr;
 }
 
 .cover {
@@ -55,6 +59,46 @@
 .root:hover .restore,
 .restore:focus-visible {
     opacity: 1;
+}
+
+.controls {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    display: flex;
+    gap: 4px;
+    padding: 6px;
+    background: rgb(0 0 0 / 70%);
+    border-radius: 999px;
+    transform: translateX(-50%);
+    -webkit-app-region: no-drag;
+}
+
+.control {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    color: white;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+}
+
+.control:hover,
+.control:focus-visible {
+    background: rgb(255 255 255 / 15%);
+}
+
+.control[aria-pressed='true'] {
+    color: var(--theme-colors-primary);
+}
+
+.control:disabled {
+    cursor: default;
+    opacity: 0.4;
 }
 
 .queue {

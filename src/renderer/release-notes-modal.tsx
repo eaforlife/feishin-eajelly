@@ -15,10 +15,10 @@ import { useLocalStorage } from '/@/shared/hooks/use-local-storage';
 const CHANGELOG_URL = `${GITHUB_REPOSITORY_URL}/blob/main/CHANGELOG.md`;
 const RELEASE_NOTES: Record<string, string[]> = {
     '1.0.0': [
-        'EAJelly is now the built-in Jellyfin server, with --server-override available for manual setup.',
+        'EAJelly now uses HTTPS first, with network-only HTTP fallback and --server-override for manual setup.',
         'Updates and release links now use the EAJelly GitHub repository.',
         'Added Windows migration from Feishin and Windows/macOS release builds.',
-        'Added a persistent cover-art mini player with native controls and queue access.',
+        'Added an always-on-top cover-art mini player with playback controls and an expandable queue.',
         'Improved startup behavior and added Jellyfin 12-compatible login handling.',
     ],
 };

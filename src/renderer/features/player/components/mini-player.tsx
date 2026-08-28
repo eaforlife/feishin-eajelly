@@ -6,9 +6,16 @@ import styles from './mini-player.module.css';
 
 import { useItemImageUrl } from '/@/renderer/components/item-image/item-image';
 import { usePlayer } from '/@/renderer/features/player/context/player-context';
-import { usePlayerQueue, usePlayerSong } from '/@/renderer/store';
+import {
+    usePlayerQueue,
+    usePlayerRepeat,
+    usePlayerShuffle,
+    usePlayerSong,
+    usePlayerStatus,
+} from '/@/renderer/store';
 import { Icon } from '/@/shared/components/icon/icon';
 import { LibraryItem } from '/@/shared/types/domain-types';
+import { PlayerRepeat, PlayerShuffle, PlayerStatus } from '/@/shared/types/types';
 
 const browser = isElectron() ? window.api.browser : null;
 
@@ -35,9 +42,20 @@ export const MiniPlayer = () => {
 
 const MiniPlayerContent = () => {
     const { t } = useTranslation();
-    const { mediaPlayByIndex } = usePlayer();
+    const [queueVisible, setQueueVisible] = useState(false);
+    const {
+        mediaNext,
+        mediaPlayByIndex,
+        mediaPrevious,
+        mediaTogglePlayPause,
+        toggleRepeat,
+        toggleShuffle,
+    } = usePlayer();
     const currentSong = usePlayerSong();
     const queue = usePlayerQueue();
+    const repeat = usePlayerRepeat();
+    const shuffle = usePlayerShuffle();
+    const status = usePlayerStatus();
     const imageUrl = useItemImageUrl({
         id: currentSong?.imageId,
         imageUrl: currentSong?.imageUrl,
@@ -46,8 +64,10 @@ const MiniPlayerContent = () => {
         size: 600,
     });
 
+    const playPauseLabel = status === PlayerStatus.PLAYING ? t('player.pause') : t('player.play');
+
     return (
-        <div className={styles.root}>
+        <div className={`${styles.root} ${queueVisible ? styles.withQueue : ''}`}>
             <div className={styles.cover}>
                 {imageUrl ? (
                     <img
@@ -70,29 +90,102 @@ const MiniPlayerContent = () => {
                 >
                     <Icon icon="appWindow" />
                 </button>
+                <div className={styles.controls}>
+                    <button
+                        aria-label={t('player.shuffle')}
+                        aria-pressed={shuffle !== PlayerShuffle.NONE}
+                        className={styles.control}
+                        disabled={!currentSong}
+                        onClick={toggleShuffle}
+                        title={t('player.shuffle')}
+                        type="button"
+                    >
+                        <Icon icon="mediaShuffle" />
+                    </button>
+                    <button
+                        aria-label={t('player.previous')}
+                        className={styles.control}
+                        disabled={!currentSong}
+                        onClick={() => mediaPrevious(false)}
+                        title={t('player.previous')}
+                        type="button"
+                    >
+                        <Icon icon="mediaPrevious" />
+                    </button>
+                    <button
+                        aria-label={playPauseLabel}
+                        className={styles.control}
+                        disabled={!currentSong}
+                        onClick={mediaTogglePlayPause}
+                        title={playPauseLabel}
+                        type="button"
+                    >
+                        <Icon icon={status === PlayerStatus.PLAYING ? 'mediaPause' : 'mediaPlay'} />
+                    </button>
+                    <button
+                        aria-label={t('player.next')}
+                        className={styles.control}
+                        disabled={!currentSong}
+                        onClick={() => mediaNext(false)}
+                        title={t('player.next')}
+                        type="button"
+                    >
+                        <Icon icon="mediaNext" />
+                    </button>
+                    <button
+                        aria-label={t('player.repeat')}
+                        aria-pressed={repeat !== PlayerRepeat.NONE}
+                        className={styles.control}
+                        disabled={!currentSong}
+                        onClick={toggleRepeat}
+                        title={t('player.repeat')}
+                        type="button"
+                    >
+                        <Icon
+                            icon={repeat === PlayerRepeat.ONE ? 'mediaRepeatOne' : 'mediaRepeat'}
+                        />
+                    </button>
+                    <button
+                        aria-label={t('player.queue')}
+                        aria-pressed={queueVisible}
+                        className={styles.control}
+                        onClick={async () => {
+                            const visible = await browser?.setMiniPlayerQueueVisible(!queueVisible);
+                            setQueueVisible(visible ?? false);
+                        }}
+                        title={t('player.queue')}
+                        type="button"
+                    >
+                        <Icon icon="queue" />
+                    </button>
+                </div>
             </div>
-            <section className={styles.queue}>
-                <h2 className={styles.heading}>{t('player.queue')}</h2>
-                <ol className={styles['queue-list']}>
-                    {queue.map((song, index) => {
-                        const isCurrent = song._uniqueId === currentSong?._uniqueId;
+            {queueVisible && (
+                <section className={styles.queue}>
+                    <h2 className={styles.heading}>{t('player.queue')}</h2>
+                    <ol className={styles['queue-list']}>
+                        {queue.map((song, index) => {
+                            const isCurrent = song._uniqueId === currentSong?._uniqueId;
 
-                        return (
-                            <li key={song._uniqueId}>
-                                <button
-                                    aria-current={isCurrent ? 'true' : undefined}
-                                    className={styles['queue-item']}
-                                    onClick={() => mediaPlayByIndex(index)}
-                                    type="button"
-                                >
-                                    <span className={styles['song-name']}>{song.name}</span>
-                                    <span className={styles['artist-name']}>{song.artistName}</span>
-                                </button>
-                            </li>
-                        );
-                    })}
-                </ol>
-            </section>
+                            return (
+                                <li key={song._uniqueId}>
+                                    <button
+                                        aria-current={isCurrent ? 'true' : undefined}
+                                        className={styles['queue-item']}
+                                        onClick={() => mediaPlayByIndex(index)}
+                                        type="button"
+                                    >
+                                        <span className={styles['song-name']}>{song.name}</span>
+                                        <span className={styles['artist-name']}>
+                                            {song.artistName}
+                                        </span>
+                                    </button>
+                                </li>
+                            );
+                        })}
+                    </ol>
+                </section>
+            )}
         </div>
     );
 };

@@ -9,10 +9,12 @@ import packageJson from '../../../../package.json';
 import i18n from '/@/i18n/i18n';
 import { authenticationFailure } from '/@/renderer/api/utils';
 import { useAuthStore } from '/@/renderer/store';
+import { logger } from '/@/renderer/utils/logger';
 import { getServerUrl } from '/@/renderer/utils/normalize-server-url';
 import { jfType } from '/@/shared/api/jellyfin/jellyfin-types';
 import { getClientType } from '/@/shared/api/utils';
 import { ServerListItemWithCredential } from '/@/shared/types/domain-types';
+import { getEajellyHttpFallbackUrl } from '/@/shared/utils/eajelly-server';
 
 const c = initContract();
 
@@ -487,8 +489,8 @@ export const jfApiClient = (args: {
                 baseUrl = url;
             }
 
-            try {
-                const result = await axiosClient.request({
+            const request = (requestBaseUrl: string | undefined) =>
+                axiosClient.request({
                     data: body,
                     headers: {
                         ...headers,
@@ -499,8 +501,28 @@ export const jfApiClient = (args: {
                     method: method as Method,
                     params,
                     signal,
-                    url: `${baseUrl}/${api}`,
+                    url: `${requestBaseUrl}/${api}`,
                 });
+
+            try {
+                let result: AxiosResponse;
+
+                try {
+                    result = await request(baseUrl);
+                } catch (error) {
+                    const fallbackUrl =
+                        isAxiosError(error) && error.code === 'ERR_NETWORK'
+                            ? getEajellyHttpFallbackUrl(baseUrl)
+                            : undefined;
+
+                    if (!fallbackUrl) throw error;
+
+                    logger.warn('EAJelly HTTPS unavailable, retrying over HTTP', {
+                        fallbackUrl,
+                    });
+                    result = await request(fallbackUrl);
+                }
+
                 return {
                     body: result.data,
                     headers: result.headers as any,
