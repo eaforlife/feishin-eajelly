@@ -5,13 +5,16 @@ import { useTranslation } from 'react-i18next';
 import styles from './mini-player.module.css';
 
 import { useItemImageUrl } from '/@/renderer/components/item-image/item-image';
+import { Lyrics } from '/@/renderer/features/lyrics/lyrics';
 import { usePlayer } from '/@/renderer/features/player/context/player-context';
 import {
+    usePlayerMuted,
     usePlayerQueue,
     usePlayerRepeat,
     usePlayerShuffle,
     usePlayerSong,
     usePlayerStatus,
+    usePlayerVolume,
 } from '/@/renderer/store';
 import { Icon } from '/@/shared/components/icon/icon';
 import { LibraryItem } from '/@/shared/types/domain-types';
@@ -43,19 +46,25 @@ export const MiniPlayer = () => {
 const MiniPlayerContent = () => {
     const { t } = useTranslation();
     const [queueVisible, setQueueVisible] = useState(false);
+    const [showLyrics, setShowLyrics] = useState(false);
+    const [volumeVisible, setVolumeVisible] = useState(false);
     const {
         mediaNext,
         mediaPlayByIndex,
         mediaPrevious,
+        mediaToggleMute,
         mediaTogglePlayPause,
+        setVolume,
         toggleRepeat,
         toggleShuffle,
     } = usePlayer();
     const currentSong = usePlayerSong();
+    const muted = usePlayerMuted();
     const queue = usePlayerQueue();
     const repeat = usePlayerRepeat();
     const shuffle = usePlayerShuffle();
     const status = usePlayerStatus();
+    const volume = usePlayerVolume();
     const imageUrl = useItemImageUrl({
         id: currentSong?.imageId,
         imageUrl: currentSong?.imageUrl,
@@ -65,11 +74,16 @@ const MiniPlayerContent = () => {
     });
 
     const playPauseLabel = status === PlayerStatus.PLAYING ? t('player.pause') : t('player.play');
+    const volumeIcon = muted ? 'volumeMute' : volume > 50 ? 'volumeMax' : 'volumeNormal';
 
     return (
         <div className={`${styles.root} ${queueVisible ? styles.withQueue : ''}`}>
             <div className={styles.cover}>
-                {imageUrl ? (
+                {showLyrics ? (
+                    <div className={styles.lyrics}>
+                        <Lyrics fadeOutNoLyricsMessage={false} settingsKey="miniPlayer" />
+                    </div>
+                ) : imageUrl ? (
                     <img
                         alt={currentSong?.name || ''}
                         className={styles.artwork}
@@ -90,6 +104,29 @@ const MiniPlayerContent = () => {
                 >
                     <Icon icon="appWindow" />
                 </button>
+                {volumeVisible && (
+                    <div className={styles['volume-panel']}>
+                        <button
+                            aria-label={muted ? t('player.muted') : t('player.mute')}
+                            className={styles['volume-mute']}
+                            onClick={mediaToggleMute}
+                            title={muted ? t('player.muted') : t('player.mute')}
+                            type="button"
+                        >
+                            <Icon icon={volumeIcon} />
+                        </button>
+                        <input
+                            aria-label={t('player.volume')}
+                            className={styles['volume-slider']}
+                            max={100}
+                            min={0}
+                            onChange={(event) => setVolume(Number(event.currentTarget.value))}
+                            type="range"
+                            value={volume}
+                        />
+                        <span className={styles['volume-value']}>{muted ? 0 : volume}%</span>
+                    </div>
+                )}
                 <div className={styles.controls}>
                     <button
                         aria-label={t('player.shuffle')}
@@ -142,8 +179,31 @@ const MiniPlayerContent = () => {
                         type="button"
                     >
                         <Icon
+                            fill={repeat === PlayerRepeat.NONE ? 'default' : 'primary'}
                             icon={repeat === PlayerRepeat.ONE ? 'mediaRepeatOne' : 'mediaRepeat'}
+                            size={22}
                         />
+                    </button>
+                    <button
+                        aria-label={t('player.lyrics')}
+                        aria-pressed={showLyrics}
+                        className={styles.control}
+                        disabled={!currentSong}
+                        onClick={() => setShowLyrics((visible) => !visible)}
+                        title={t('player.lyrics')}
+                        type="button"
+                    >
+                        <Icon icon="microphone" />
+                    </button>
+                    <button
+                        aria-label={t('player.volume')}
+                        aria-pressed={volumeVisible}
+                        className={styles.control}
+                        onClick={() => setVolumeVisible((visible) => !visible)}
+                        title={t('player.volume')}
+                        type="button"
+                    >
+                        <Icon icon={volumeIcon} />
                     </button>
                     <button
                         aria-label={t('player.queue')}

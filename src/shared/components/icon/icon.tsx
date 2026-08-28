@@ -141,8 +141,13 @@ import {
     LuX,
 } from 'react-icons/lu';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
-import { PiMouseLeftClickFill, PiMouseRightClickFill } from 'react-icons/pi';
-import { RiPlayListAddLine, RiRepeat2Line, RiRepeatOneLine } from 'react-icons/ri';
+import {
+    PiMouseLeftClickFill,
+    PiMouseRightClickFill,
+    PiRepeatBold,
+    PiRepeatOnceBold,
+} from 'react-icons/pi';
+import { RiPlayListAddLine } from 'react-icons/ri';
 
 import styles from './icon.module.css';
 import lastfmLogoIcon from './lastfm_logo_icon.png';
@@ -317,8 +322,8 @@ export const AppIcon = {
     mediaPlayNext: LuCornerUpRight,
     mediaPrevious: LuSkipBack,
     mediaRandom: RiPlayListAddLine,
-    mediaRepeat: RiRepeat2Line,
-    mediaRepeatOne: RiRepeatOneLine,
+    mediaRepeat: PiRepeatBold,
+    mediaRepeatOne: PiRepeatOnceBold,
     mediaSettings: LuSlidersHorizontal,
     mediaShuffle: LuShuffle,
     mediaSpeed: LuGauge,

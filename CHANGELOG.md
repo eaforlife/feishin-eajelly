@@ -2,6 +2,14 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.0.1 - 2026-08-28
+
+- Anchored the mini player to the lower-right and made its queue expand left within the active display.
+- Added a lyrics toggle that replaces the cover art without changing the cover panel dimensions.
+- Added a compact mini-player volume control with mute and a slider.
+- Replaced the repeat and repeat-one controls with heavier, more visible icons.
+- Made mini-player controls fade out with the pointer, matching the restore control.
+
 ## 1.0.0 - 2026-08-28
 
 - Set HTTPS EAJelly as the built-in Jellyfin server with network-only HTTP fallback.

@@ -782,6 +782,7 @@
         "trackRadio": "Track radio",
         "unfavorite": "Unfavorite",
         "pause": "Pause",
+        "volume": "Volume",
         "viewQueue": "View queue",
         "sleepTimer": "Sleep timer",
         "sleepTimer_endOfSong": "End of current song",

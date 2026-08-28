@@ -21,6 +21,12 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'Added an always-on-top cover-art mini player with playback controls and an expandable queue.',
         'Improved startup behavior and added Jellyfin 12-compatible login handling.',
     ],
+    '1.0.1': [
+        'The mini player now opens in the lower-right and expands its queue toward the left.',
+        'Added a lyrics view that replaces the cover while keeping the mini player compact.',
+        'Added a compact volume control with mute and a slider.',
+        'Made the repeat and repeat-one controls heavier and easier to see.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

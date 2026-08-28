@@ -172,7 +172,7 @@ const getMiniPlayerBounds = (queueVisible: boolean, referenceBounds: Rectangle):
     return {
         height,
         width,
-        x: workArea.x,
+        x: workArea.x + workArea.width - width,
         y: workArea.y + workArea.height - height,
     };
 };
