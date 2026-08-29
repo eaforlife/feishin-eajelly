@@ -2058,7 +2058,7 @@ const initialState: SettingsState = {
         audioFadeOnStatusChange: true,
         compressor: {
             attack: 20,
-            enabled: false,
+            enabled: true,
             knee: 2.83,
             makeup: 6,
             ratio: 4,
@@ -2905,10 +2905,14 @@ export const useSettingsStore = createWithEqualityFn<SettingsSlice>()(
                     state.playback.mpvProperties.replayGainMode = 'track';
                 }
 
+                if (version < 35) {
+                    state.playback.compressor.enabled = true;
+                }
+
                 return persistedState;
             },
             name: 'store_settings',
-            version: 34,
+            version: 35,
         },
     ),
 );

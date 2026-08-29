@@ -1,10 +1,17 @@
-name: Publish macOS (Manual)
+name: Publish macOS
 
-on: workflow_dispatch
+on:
+    workflow_dispatch:
+    push:
+        tags:
+            - 'v*.*.*'
+
+permissions:
+    contents: write
 
 jobs:
     publish:
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
         runs-on: ${{ matrix.os }}
 
         strategy:

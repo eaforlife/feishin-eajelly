@@ -391,12 +391,6 @@ export const EqSettings = memo(() => {
     };
 
     // ── Compressor handlers ───────────────────────────────────────────────────
-    const handleCompToggle = (enabled: boolean) => {
-        const newComp = { ...settings.compressor, enabled };
-        setSettings({ playback: { compressor: newComp } });
-        applyFilters(settings.equalizer, newComp);
-    };
-
     const handleCompChangeEnd = (key: keyof CompressorSettings, value: number) => {
         const newComp = { ...settings.compressor, [key]: value };
         setSettings({ playback: { compressor: newComp } });
@@ -702,12 +696,7 @@ export const EqSettings = memo(() => {
     // ── Compressor SettingsSection options ────────────────────────────────────
     const compressorOptions: SettingOption[] = [
         {
-            control: (
-                <Switch
-                    defaultChecked={settings.compressor.enabled}
-                    onChange={(e) => handleCompToggle(e.currentTarget.checked)}
-                />
-            ),
+            control: <Switch defaultChecked={settings.compressor.enabled} disabled />,
             description:
                 settings.type === PlayerType.LOCAL
                     ? t('setting.compressor', { context: 'descriptionMpv' })

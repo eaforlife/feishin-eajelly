@@ -34,6 +34,11 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'Exit and playback controls now share fade behavior, and the volume popup closes automatically.',
         'ReplayGain track mode is enabled by default for tagged Jellyfin audio.',
     ],
+    '1.1.0': [
+        'The title bar now identifies the app as EAJelly Music by Feishin.',
+        'ReplayGain track mode and the compressor are enabled by default, with the compressor locked on.',
+        'The mini player is now 360 pixels, stays within the screen, and keeps its position when the queue is toggled.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

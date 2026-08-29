@@ -2,6 +2,12 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.1.0 - 2026-08-29
+
+- Branded the window title as EAJelly Music by Feishin.
+- Enabled ReplayGain track mode and the compressor by default, with the compressor toggle locked on.
+- Resized the mini player to 360 pixels and kept it within the screen while preserving its position when toggling the queue.
+
 ## 1.0.2 - 2026-08-29
 
 - Enlarged the mini player to a DPI-aware 420-pixel square with a top-right display inset.

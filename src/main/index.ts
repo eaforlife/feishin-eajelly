@@ -164,7 +164,7 @@ let miniPlayerBounds: null | Rectangle = null;
 let miniPlayerMode = false;
 let miniPlayerQueueVisible = false;
 
-const MINI_PLAYER_SIZE = 420;
+const MINI_PLAYER_SIZE = 360;
 
 const getMiniPlayerBounds = (referenceBounds: Rectangle): Rectangle => {
     const workArea = screen.getDisplayMatching(referenceBounds).workArea;
@@ -177,6 +177,18 @@ const getMiniPlayerBounds = (referenceBounds: Rectangle): Rectangle => {
         width,
         x: Math.max(workArea.x, workArea.x + workArea.width - width - displayPadding),
         y: Math.min(workArea.y + displayPadding, workArea.y + workArea.height - height),
+    };
+};
+
+const clampMiniPlayerPosition = (bounds: Rectangle): Rectangle => {
+    const workArea = screen.getDisplayMatching(bounds).workArea;
+    const maxX = Math.max(workArea.x, workArea.x + workArea.width - bounds.width);
+    const maxY = Math.max(workArea.y, workArea.y + workArea.height - bounds.height);
+
+    return {
+        ...bounds,
+        x: Math.min(Math.max(bounds.x, workArea.x), maxX),
+        y: Math.min(Math.max(bounds.y, workArea.y), maxY),
     };
 };
 
@@ -521,6 +533,8 @@ async function createWindow(first = true): Promise<void> {
     ipcMain.handle('window-mini-player-set', (_event, enabled: boolean) => {
         if (!mainWindow || miniPlayerMode === enabled) return miniPlayerMode;
 
+        miniPlayerMode = enabled;
+
         if (enabled) {
             miniPlayerBounds = mainWindow.getNormalBounds();
             miniPlayerQueueVisible = false;
@@ -541,7 +555,6 @@ async function createWindow(first = true): Promise<void> {
             miniPlayerBounds = null;
         }
 
-        miniPlayerMode = enabled;
         mainWindow.webContents.send('window-mini-player-changed', enabled);
         return miniPlayerMode;
     });
@@ -656,6 +669,16 @@ async function createWindow(first = true): Promise<void> {
         } else if (direction === 'left' && mainWindow?.webContents.navigationHistory.canGoBack()) {
             mainWindow.webContents.navigationHistory.goBack();
         }
+    });
+
+    mainWindow.on('move', () => {
+        if (!mainWindow || !miniPlayerMode) return;
+
+        const bounds = mainWindow.getBounds();
+        const clampedBounds = clampMiniPlayerPosition(bounds);
+        if (clampedBounds.x === bounds.x && clampedBounds.y === bounds.y) return;
+
+        mainWindow.setBounds(clampedBounds);
     });
 
     mainWindow.on('closed', () => {

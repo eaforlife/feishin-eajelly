@@ -27,6 +27,7 @@ import { Platform, PlayerStatus } from '/@/shared/types/types';
 const localSettings = isElectron() ? window.api.localSettings : null;
 
 const browser = isElectron() ? window.api.browser : null;
+const APP_TITLE = 'EAJelly Music by Feishin';
 const close = () => browser?.exit();
 const minimize = () => browser?.minimize();
 const maximize = () => browser?.maximize();
@@ -162,7 +163,7 @@ export const WindowBar = () => {
         const privateModeString = privateMode ? t('page.windowBar.privateMode') : '';
 
         if (!windowBarTrackinfo) {
-            return `EAJelly${privateMode ? ` ${privateModeString}` : ''}`;
+            return `${APP_TITLE}${privateMode ? ` ${privateModeString}` : ''}`;
         }
 
         // Show radio information if radio is active
@@ -182,7 +183,7 @@ export const WindowBar = () => {
                 }
             }
 
-            return `${radioStatusString}${radioTitle}${radioMetadata} - EAJelly${privateMode ? ` ${privateModeString}` : ''}`;
+            return `${radioStatusString}${radioTitle}${radioMetadata} - ${APP_TITLE}${privateMode ? ` ${privateModeString}` : ''}`;
         }
 
         // Show regular song information
@@ -190,8 +191,8 @@ export const WindowBar = () => {
         const queueString = queueLength ? `(${index + 1} / ${queueLength}) ` : '';
         const title = `${
             queueLength
-                ? `${statusString}${queueString}${currentSong?.name}${currentSong?.artistName ? ` - ${currentSong?.artistName} - EAJelly` : ''}`
-                : 'EAJelly'
+                ? `${statusString}${queueString}${currentSong?.name}${currentSong?.artistName ? ` - ${currentSong.artistName}` : ''} - ${APP_TITLE}`
+                : APP_TITLE
         }${privateMode ? ` ${privateModeString}` : ''}`;
         return title;
     }, [
