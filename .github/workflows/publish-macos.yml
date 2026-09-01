@@ -28,6 +28,13 @@ jobs:
             - name: Install dependencies
               run: pnpm install
 
+            - name: Ensure draft release exists
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  version=$(node -p "require('./package.json').version")
+                  gh release view "v$version" || gh release create "v$version" --draft --title "$version"
+
             - name: Build and Publish releases
               env:
                   NODE_OPTIONS: --max-old-space-size=4096
