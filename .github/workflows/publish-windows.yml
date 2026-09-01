@@ -2,6 +2,9 @@ name: Publish Windows (Manual)
 
 on: workflow_dispatch
 
+permissions:
+    contents: write
+
 jobs:
     publish:
         if: github.ref == 'refs/heads/main'
