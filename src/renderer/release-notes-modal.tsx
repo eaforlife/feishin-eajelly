@@ -39,6 +39,13 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'ReplayGain track mode and the compressor are enabled by default, with the compressor locked on.',
         'The mini player is now 360 pixels, stays within the screen, and keeps its position when the queue is toggled.',
     ],
+    '1.2.0': [
+        'The mini player now keeps the current song and artist visible over the cover art.',
+        'Playback and exit controls appear when hovering anywhere over the mini player.',
+        'Lyrics mode stays draggable and adds padding around the lyrics.',
+        'Jellyfin now identifies the client as Feishin by EAJelly.xyz with the current app version.',
+        'Synced upstream playback resume fixes and Jellyfin play queue reporting.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

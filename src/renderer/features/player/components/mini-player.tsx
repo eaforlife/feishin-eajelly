@@ -124,6 +124,14 @@ const MiniPlayerContent = () => {
                         <Icon color="muted" icon="itemAlbum" size="25%" />
                     </div>
                 )}
+                {!queueVisible && !showLyrics && currentSong && (
+                    <div className={styles['now-playing']}>
+                        <span className={styles['now-playing-title']}>{currentSong.name}</span>
+                        <span className={styles['now-playing-artist']}>
+                            {currentSong.artistName}
+                        </span>
+                    </div>
+                )}
                 <button
                     aria-label={t('player.exitMiniPlayer')}
                     className={styles.restore}

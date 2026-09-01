@@ -36,10 +36,43 @@
 }
 
 .lyrics {
+    box-sizing: border-box;
+    padding: 16px;
     color: var(--theme-colors-foreground);
     pointer-events: none;
     background: var(--theme-colors-surface);
-    -webkit-app-region: no-drag;
+}
+
+.now-playing {
+    position: absolute;
+    top: 12px;
+    right: 52px;
+    left: 12px;
+    z-index: 2;
+    width: fit-content;
+    max-width: calc(100% - 64px);
+    padding: 7px 10px;
+    color: white;
+    background: rgb(0 0 0 / 65%);
+    border-radius: 8px;
+}
+
+.now-playing-title,
+.now-playing-artist {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.now-playing-title {
+    font-size: var(--theme-font-size-sm);
+    font-weight: 600;
+}
+
+.now-playing-artist {
+    font-size: var(--theme-font-size-xs);
+    color: rgb(255 255 255 / 80%);
 }
 
 .restore {
@@ -122,8 +155,7 @@
     -webkit-app-region: no-drag;
 }
 
-.root:hover :is(.restore, .controls, .volume-panel),
-.root:focus-within :is(.restore, .controls, .volume-panel) {
+.root:is(:hover, :focus-within) :is(.restore, .controls, .volume-panel) {
     opacity: 1;
 }
 

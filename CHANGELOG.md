@@ -2,6 +2,14 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.0 - 2026-09-01
+
+- Added a persistent song title and artist overlay to the mini player.
+- Made mini-player playback and exit controls appear when hovering anywhere over the window.
+- Kept the mini player draggable in lyrics mode and padded lyrics on every side.
+- Identified Jellyfin sessions as Feishin by EAJelly.xyz with the current app version.
+- Synced upstream fixes for playback resume and Jellyfin play queue reporting.
+
 ## 1.1.0 - 2026-08-29
 
 - Branded the window title as EAJelly Music by Feishin.
