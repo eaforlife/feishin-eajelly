@@ -52,7 +52,7 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'The Windows taskbar preview is labeled Now Playing and keeps its play/pause button in sync.',
     ],
     '1.2.2': [
-        'The mini-player volume slider stays open while moving the pointer to it.',
+        'The mini-player volume slider stays open during window activity and closes with the controls after 10 seconds of inactivity.',
         'The song title and artist remain above mini-player lyrics without covering the lyric text.',
         'The Windows 11 taskbar preview now shows Now Playing with the current song title and artist.',
     ],

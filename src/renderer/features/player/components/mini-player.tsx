@@ -83,7 +83,10 @@ const MiniPlayerContent = () => {
         const handleActivity = () => {
             setControlsVisible(true);
             window.clearTimeout(timeoutId);
-            timeoutId = window.setTimeout(() => setControlsVisible(false), CONTROLS_IDLE_TIMEOUT);
+            timeoutId = window.setTimeout(() => {
+                setControlsVisible(false);
+                setVolumeVisible(false);
+            }, CONTROLS_IDLE_TIMEOUT);
         };
 
         handleActivity();
