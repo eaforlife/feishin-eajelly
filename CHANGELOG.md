@@ -2,6 +2,10 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.4 - 2026-09-02
+
+- Fixed native Windows taskbar playback controls being registered before the taskbar preview was ready.
+
 ## 1.2.3 - 2026-09-02
 
 - Added native previous, play/pause, and next controls to the Windows taskbar preview.

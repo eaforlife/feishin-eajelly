@@ -158,6 +158,7 @@ let menuBuilder: MenuBuilder | null = null;
 let currentPlaybackStatus: PlayerStatus = PlayerStatus.PAUSED;
 let currentTaskbarArtist = '';
 let currentTaskbarTrack = '';
+let winThumbarButtonsReady = false;
 let currentPrivateMode = false;
 let currentRepeatMode: PlayerRepeat = PlayerRepeat.NONE;
 let currentSidebarCollapsed = false;
@@ -333,6 +334,9 @@ const createWinThumbarButtons = () => {
             [currentTaskbarTrack, currentTaskbarArtist].filter(Boolean).join(' - ') || 'EAJelly';
         window?.setThumbnailToolTip(taskbarTitle);
         window?.setTitle(taskbarTitle);
+        // A failed pre-show add makes Electron treat later calls as updates.
+        if (!winThumbarButtonsReady) return;
+
         window?.setThumbarButtons([
             {
                 click: () => getMainWindow()?.webContents.send('renderer-player-previous'),
@@ -628,9 +632,22 @@ async function createWindow(first = true): Promise<void> {
 
     const startWindowMinimized = store.get('window_start_minimized', false) as boolean;
 
-    mainWindow.on('show', () => {
-        setTimeout(createWinThumbarButtons, 500);
-    });
+    if (isWindows()) {
+        const window = mainWindow;
+
+        window.on('show', () => {
+            setTimeout(() => {
+                if (window.isDestroyed() || !window.isVisible()) return;
+
+                winThumbarButtonsReady = true;
+                createWinThumbarButtons();
+            }, 1000);
+        });
+
+        window.on('hide', () => {
+            winThumbarButtonsReady = false;
+        });
+    }
 
     mainWindow.on('ready-to-show', () => {
         // mainWindow.show()

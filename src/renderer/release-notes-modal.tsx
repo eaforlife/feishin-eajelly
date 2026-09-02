@@ -60,6 +60,9 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'The Windows taskbar preview now includes native previous, play/pause, and next controls.',
         'The Windows taskbar preview title now shows the current song title and artist.',
     ],
+    '1.2.4': [
+        'Fixed native previous, play/pause, and next controls missing from the Windows taskbar preview.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 
