@@ -156,6 +156,8 @@ let forceQuit = false;
 let powerSaveBlockerId: null | number = null;
 let menuBuilder: MenuBuilder | null = null;
 let currentPlaybackStatus: PlayerStatus = PlayerStatus.PAUSED;
+let currentTaskbarArtist = '';
+let currentTaskbarTrack = '';
 let currentPrivateMode = false;
 let currentRepeatMode: PlayerRepeat = PlayerRepeat.NONE;
 let currentSidebarCollapsed = false;
@@ -328,7 +330,11 @@ export const sendToastToRenderer = ({
 const createWinThumbarButtons = () => {
     if (isWindows()) {
         const window = getMainWindow();
-        window?.setThumbnailToolTip('Now Playing');
+        const taskbarTitle = ['Now Playing', currentTaskbarTrack, currentTaskbarArtist]
+            .filter(Boolean)
+            .join(' - ');
+        window?.setThumbnailToolTip(taskbarTitle);
+        window?.setTitle(taskbarTitle);
         window?.setThumbarButtons([
             {
                 click: () => getMainWindow()?.webContents.send('renderer-player-previous'),
@@ -654,6 +660,13 @@ async function createWindow(first = true): Promise<void> {
 
     mainWindow.webContents.on('unresponsive', () => {
         log.error('Renderer process unresponsive');
+    });
+
+    mainWindow.on('page-title-updated', (event) => {
+        if (!isWindows()) return;
+
+        event.preventDefault();
+        createWinThumbarButtons();
     });
 
     // Mouse navigation
@@ -1143,6 +1156,13 @@ ipcMain.on('update-playback', (_event, status: PlayerStatus) => {
 
     if (isWindows()) createWinThumbarButtons();
     if (isMacOS()) updateMainMenu();
+});
+
+ipcMain.on('update-taskbar-preview', (_event, metadata?: { artist?: string; title?: string }) => {
+    currentTaskbarArtist = typeof metadata?.artist === 'string' ? metadata.artist : '';
+    currentTaskbarTrack = typeof metadata?.title === 'string' ? metadata.title : '';
+
+    if (isWindows()) createWinThumbarButtons();
 });
 
 ipcMain.on('update-repeat', (_event, repeat: PlayerRepeat) => {

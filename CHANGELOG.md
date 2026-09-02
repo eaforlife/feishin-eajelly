@@ -2,6 +2,12 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.2 - 2026-09-02
+
+- Kept the mini-player volume slider open while moving the pointer from the volume button to the slider.
+- Kept the song title and artist above mini-player lyrics and moved the lyrics below the overlay.
+- Added the current song title and artist to the Windows 11 taskbar preview under a Now Playing heading.
+
 ## 1.2.1 - 2026-09-02
 
 - Kept mini-player controls visible during mouse activity anywhere in the window, then faded them after 10 seconds of inactivity.

@@ -102,11 +102,7 @@ const MiniPlayerContent = () => {
     }, []);
 
     return (
-        <div
-            className={styles.root}
-            data-controls-visible={controlsVisible}
-            onMouseLeave={() => setVolumeVisible(false)}
-        >
+        <div className={styles.root} data-controls-visible={controlsVisible}>
             <div className={styles.cover}>
                 {queueVisible ? (
                     <section className={styles.queue}>
@@ -153,7 +149,7 @@ const MiniPlayerContent = () => {
                         <Icon color="muted" icon="itemAlbum" size="25%" />
                     </div>
                 )}
-                {!queueVisible && !showLyrics && currentSong && (
+                {!queueVisible && currentSong && (
                     <div className={styles['now-playing']}>
                         <Icon
                             className={

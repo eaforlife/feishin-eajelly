@@ -51,6 +51,11 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'The song overlay now includes an animated play-state indicator.',
         'The Windows taskbar preview is labeled Now Playing and keeps its play/pause button in sync.',
     ],
+    '1.2.2': [
+        'The mini-player volume slider stays open while moving the pointer to it.',
+        'The song title and artist remain above mini-player lyrics without covering the lyric text.',
+        'The Windows 11 taskbar preview now shows Now Playing with the current song title and artist.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 
