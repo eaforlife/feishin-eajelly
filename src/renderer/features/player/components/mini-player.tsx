@@ -21,6 +21,7 @@ import { LibraryItem } from '/@/shared/types/domain-types';
 import { PlayerRepeat, PlayerShuffle, PlayerStatus } from '/@/shared/types/types';
 
 const browser = isElectron() ? window.api.browser : null;
+const CONTROLS_IDLE_TIMEOUT = 10_000;
 
 export const MiniPlayer = () => {
     const [enabled, setEnabled] = useState(false);
@@ -47,6 +48,7 @@ const MiniPlayerContent = () => {
     const { t } = useTranslation();
     const [queueVisible, setQueueVisible] = useState(false);
     const [showLyrics, setShowLyrics] = useState(false);
+    const [controlsVisible, setControlsVisible] = useState(true);
     const [volumeVisible, setVolumeVisible] = useState(false);
     const {
         mediaNext,
@@ -76,8 +78,35 @@ const MiniPlayerContent = () => {
     const playPauseLabel = status === PlayerStatus.PLAYING ? t('player.pause') : t('player.play');
     const volumeIcon = muted ? 'volumeMute' : volume > 50 ? 'volumeMax' : 'volumeNormal';
 
+    useEffect(() => {
+        let timeoutId: number;
+        const handleActivity = () => {
+            setControlsVisible(true);
+            window.clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(() => setControlsVisible(false), CONTROLS_IDLE_TIMEOUT);
+        };
+
+        handleActivity();
+        window.addEventListener('focusin', handleActivity);
+        window.addEventListener('keydown', handleActivity);
+        window.addEventListener('pointerdown', handleActivity);
+        window.addEventListener('pointermove', handleActivity);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+            window.removeEventListener('focusin', handleActivity);
+            window.removeEventListener('keydown', handleActivity);
+            window.removeEventListener('pointerdown', handleActivity);
+            window.removeEventListener('pointermove', handleActivity);
+        };
+    }, []);
+
     return (
-        <div className={styles.root} onMouseLeave={() => setVolumeVisible(false)}>
+        <div
+            className={styles.root}
+            data-controls-visible={controlsVisible}
+            onMouseLeave={() => setVolumeVisible(false)}
+        >
             <div className={styles.cover}>
                 {queueVisible ? (
                     <section className={styles.queue}>
@@ -126,10 +155,18 @@ const MiniPlayerContent = () => {
                 )}
                 {!queueVisible && !showLyrics && currentSong && (
                     <div className={styles['now-playing']}>
-                        <span className={styles['now-playing-title']}>{currentSong.name}</span>
-                        <span className={styles['now-playing-artist']}>
-                            {currentSong.artistName}
-                        </span>
+                        <Icon
+                            className={
+                                status === PlayerStatus.PLAYING ? styles['playing-icon'] : undefined
+                            }
+                            icon={status === PlayerStatus.PLAYING ? 'mediaPlay' : 'mediaPause'}
+                        />
+                        <div className={styles['now-playing-details']}>
+                            <span className={styles['now-playing-title']}>{currentSong.name}</span>
+                            <span className={styles['now-playing-artist']}>
+                                {currentSong.artistName}
+                            </span>
+                        </div>
                     </div>
                 )}
                 <button

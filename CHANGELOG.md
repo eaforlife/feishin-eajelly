@@ -2,6 +2,12 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.1 - 2026-09-02
+
+- Kept mini-player controls visible during mouse activity anywhere in the window, then faded them after 10 seconds of inactivity.
+- Added an animated play-state indicator beside the mini-player song title and artist.
+- Updated the Windows taskbar preview label and play/pause thumbnail button state.
+
 ## 1.2.0 - 2026-09-01
 
 - Added a persistent song title and artist overlay to the mini player.

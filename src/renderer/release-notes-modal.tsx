@@ -46,6 +46,11 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'Jellyfin now identifies the client as Feishin by EAJelly.xyz with the current app version.',
         'Synced upstream playback resume fixes and Jellyfin play queue reporting.',
     ],
+    '1.2.1': [
+        'Mini-player controls stay visible during activity anywhere in the window, then fade after 10 seconds of inactivity.',
+        'The song overlay now includes an animated play-state indicator.',
+        'The Windows taskbar preview is labeled Now Playing and keeps its play/pause button in sync.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

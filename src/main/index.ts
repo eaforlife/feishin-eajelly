@@ -327,7 +327,9 @@ export const sendToastToRenderer = ({
 
 const createWinThumbarButtons = () => {
     if (isWindows()) {
-        getMainWindow()?.setThumbarButtons([
+        const window = getMainWindow();
+        window?.setThumbnailToolTip('Now Playing');
+        window?.setThumbarButtons([
             {
                 click: () => getMainWindow()?.webContents.send('renderer-player-previous'),
                 icon: nativeImage.createFromPath(getAssetPath('skip-previous.png')),
@@ -335,7 +337,13 @@ const createWinThumbarButtons = () => {
             },
             {
                 click: () => getMainWindow()?.webContents.send('renderer-player-play-pause'),
-                icon: nativeImage.createFromPath(getAssetPath('play-circle.png')),
+                icon: nativeImage.createFromPath(
+                    getAssetPath(
+                        currentPlaybackStatus === PlayerStatus.PLAYING
+                            ? 'pause-circle.png'
+                            : 'play-circle.png',
+                    ),
+                ),
                 tooltip: 'Play/Pause',
             },
             {
@@ -1133,9 +1141,8 @@ if (!ipcMain.eventNames().includes('open-application-directory')) {
 ipcMain.on('update-playback', (_event, status: PlayerStatus) => {
     currentPlaybackStatus = status;
 
-    if (!isMacOS()) return;
-
-    updateMainMenu();
+    if (isWindows()) createWinThumbarButtons();
+    if (isMacOS()) updateMainMenu();
 });
 
 ipcMain.on('update-repeat', (_event, repeat: PlayerRepeat) => {
