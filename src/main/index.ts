@@ -714,6 +714,12 @@ async function createWindow(first = true): Promise<void> {
         }
     });
 
+    mainWindow.on('always-on-top-changed', (_event, isAlwaysOnTop) => {
+        if (miniPlayerMode && !isAlwaysOnTop) {
+            mainWindow?.setAlwaysOnTop(true, 'floating');
+        }
+    });
+
     mainWindow.on('move', () => {
         if (!mainWindow || !miniPlayerMode) return;
 

@@ -63,6 +63,10 @@ const RELEASE_NOTES: Record<string, string[]> = {
     '1.2.4': [
         'Fixed native previous, play/pause, and next controls missing from the Windows taskbar preview.',
     ],
+    '1.2.5': [
+        'The mini player now restores always-on-top mode if window interactions unset it.',
+        'Mini-player lyrics can now be navigated with the mouse wheel or scrollbar.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

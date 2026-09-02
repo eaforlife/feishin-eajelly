@@ -2,6 +2,11 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.5 - 2026-09-03
+
+- Kept the mini player always on top when window interactions unset the native window state.
+- Added mouse-wheel and scrollbar navigation to mini-player lyrics.
+
 ## 1.2.4 - 2026-09-02
 
 - Fixed native Windows taskbar playback controls being registered before the taskbar preview was ready.

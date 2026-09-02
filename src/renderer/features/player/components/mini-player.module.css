@@ -39,8 +39,8 @@
     box-sizing: border-box;
     padding: 72px 16px 16px;
     color: var(--theme-colors-foreground);
-    pointer-events: none;
     background: var(--theme-colors-surface);
+    -webkit-app-region: no-drag;
 }
 
 .now-playing {
