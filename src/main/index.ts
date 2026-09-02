@@ -285,7 +285,6 @@ export const showMainWindow = () => {
     mainWindow.setSkipTaskbar(false);
     mainWindow.show();
     mainWindow.focus();
-    createWinThumbarButtons();
 };
 
 const getMainMenuState = (): MenuPlaybackState => ({
@@ -330,9 +329,8 @@ export const sendToastToRenderer = ({
 const createWinThumbarButtons = () => {
     if (isWindows()) {
         const window = getMainWindow();
-        const taskbarTitle = ['Now Playing', currentTaskbarTrack, currentTaskbarArtist]
-            .filter(Boolean)
-            .join(' - ');
+        const taskbarTitle =
+            [currentTaskbarTrack, currentTaskbarArtist].filter(Boolean).join(' - ') || 'EAJelly';
         window?.setThumbnailToolTip(taskbarTitle);
         window?.setTitle(taskbarTitle);
         window?.setThumbarButtons([
@@ -490,6 +488,10 @@ async function createWindow(first = true): Promise<void> {
         });
     }
 
+    if (isWindows()) {
+        app.setAppUserModelId('xyz.eajelly.desktop');
+    }
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
         autoHideMenuBar: true,
@@ -626,6 +628,10 @@ async function createWindow(first = true): Promise<void> {
 
     const startWindowMinimized = store.get('window_start_minimized', false) as boolean;
 
+    mainWindow.on('show', () => {
+        setTimeout(createWinThumbarButtons, 500);
+    });
+
     mainWindow.on('ready-to-show', () => {
         // mainWindow.show()
 
@@ -645,7 +651,6 @@ async function createWindow(first = true): Promise<void> {
             }
 
             mainWindow.show();
-            createWinThumbarButtons();
         }
 
         log.info('Main window created', { startMinimized: startWindowMinimized && first });
@@ -755,10 +760,6 @@ async function createWindow(first = true): Promise<void> {
             });
         }
     });
-
-    if (isWindows()) {
-        app.setAppUserModelId('xyz.eajelly.desktop');
-    }
 
     menuBuilder = new MenuBuilder(mainWindow);
     rebuildMainMenu();

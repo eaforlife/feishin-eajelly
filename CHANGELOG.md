@@ -2,6 +2,11 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.3 - 2026-09-02
+
+- Added native previous, play/pause, and next controls to the Windows taskbar preview.
+- Simplified the Windows taskbar preview title to the current song title and artist.
+
 ## 1.2.2 - 2026-09-02
 
 - Kept the mini-player volume slider open during window activity and closed it with the controls after 10 seconds of inactivity.

@@ -56,6 +56,10 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'The song title and artist remain above mini-player lyrics without covering the lyric text.',
         'The Windows 11 taskbar preview now shows Now Playing with the current song title and artist.',
     ],
+    '1.2.3': [
+        'The Windows taskbar preview now includes native previous, play/pause, and next controls.',
+        'The Windows taskbar preview title now shows the current song title and artist.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 
