@@ -2,6 +2,10 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.6 - 2026-09-03
+
+- Kept the mini player above games after interacting with its controls.
+
 ## 1.2.5 - 2026-09-03
 
 - Kept the mini player always on top when window interactions unset the native window state.

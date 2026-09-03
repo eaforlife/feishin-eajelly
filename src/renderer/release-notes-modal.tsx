@@ -67,6 +67,7 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'The mini player now restores always-on-top mode if window interactions unset it.',
         'Mini-player lyrics can now be navigated with the mouse wheel or scrollbar.',
     ],
+    '1.2.6': ['The mini player now stays above games after interacting with playback controls.'],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

@@ -720,6 +720,10 @@ async function createWindow(first = true): Promise<void> {
         }
     });
 
+    mainWindow.on('blur', () => {
+        if (miniPlayerMode) mainWindow?.moveTop();
+    });
+
     mainWindow.on('move', () => {
         if (!mainWindow || !miniPlayerMode) return;
 
