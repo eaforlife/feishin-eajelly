@@ -168,6 +168,7 @@ let miniPlayerMode = false;
 let miniPlayerQueueVisible = false;
 
 const MINI_PLAYER_SIZE = 360;
+const MINI_PLAYER_ALWAYS_ON_TOP_LEVEL = isWindows() ? 'screen-saver' : 'floating';
 
 const getMiniPlayerBounds = (referenceBounds: Rectangle): Rectangle => {
     const workArea = screen.getDisplayMatching(referenceBounds).workArea;
@@ -563,7 +564,7 @@ async function createWindow(first = true): Promise<void> {
             mainWindow.setFullScreen(false);
             mainWindow.setMinimumSize(bounds.width, bounds.height);
             mainWindow.setResizable(false);
-            mainWindow.setAlwaysOnTop(true, 'floating');
+            mainWindow.setAlwaysOnTop(true, MINI_PLAYER_ALWAYS_ON_TOP_LEVEL);
             mainWindow.setAspectRatio(0);
             mainWindow.setBounds(bounds);
         } else {
@@ -716,7 +717,7 @@ async function createWindow(first = true): Promise<void> {
 
     mainWindow.on('always-on-top-changed', (_event, isAlwaysOnTop) => {
         if (miniPlayerMode && !isAlwaysOnTop) {
-            mainWindow?.setAlwaysOnTop(true, 'floating');
+            mainWindow?.setAlwaysOnTop(true, MINI_PLAYER_ALWAYS_ON_TOP_LEVEL);
         }
     });
 

@@ -2,6 +2,10 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.2.7 - 2026-09-05
+
+- Kept the mini player above games immediately after entering mini-player mode.
+
 ## 1.2.6 - 2026-09-03
 
 - Kept the mini player above games after interacting with its controls.
