@@ -42,7 +42,7 @@ For a requested version bump, increment the patch by one through `.99`, then inc
 
 ## Upstream sync workflow
 
-1. Fetch `upstream` and inspect its proposed commit range and changed paths before merging/rebasing.
+1. Fetch upstream branches without tags (`git fetch --no-tags upstream`) because Feishin and EAJelly can reuse version tag names. Inspect the proposed commit range and changed paths before merging/rebasing.
 2. Compare upstream changes with fork-only commits since the shared base. Resolve overlapping paths by preserving both upstream behavior and the documented EAJelly customization; don't blindly take either side.
 3. Recheck branding/endpoints, fork release workflows, dependency constraints above, and process boundaries for affected files.
 4. Use the smallest relevant checks already defined in `package.json`. For changes to the server fallback, run `pnpm check:eajelly-fallback`. For dependency changes, inspect the lockfile and use the repo's configured package manager. Run broader checks only when the change surface calls for them or the user requests them.
