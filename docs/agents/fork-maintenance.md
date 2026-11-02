@@ -35,7 +35,7 @@ To identify overlap efficiently, compare the proposed upstream range against the
 - Jellyfin's `GET /Audio/{id}/Lyrics` may return 401 while other server requests and playback remain valid. Treat that endpoint's failure as unavailable lyrics; do not clear credentials or log out for its 401 response.
 - Server lock mode keeps server selection/manage actions hidden; the rescan action is limited to administrators. Preserve the upstream menu's `showMainWindow` callback and EAJelly's `xyz.eajelly.desktop` app identity when resolving main-process changes.
 - Release and update endpoints must remain on `eaforlife/feishin-eajelly`. Do not carry upstream-specific package publishing actions or identifiers into this fork.
-- A `v*.*.*` tag starts the consolidated desktop and Docker builds. The release job waits for all platforms, then creates a published (non-draft) GitHub release with Windows and macOS updater assets; keep every package and release target scoped to this fork.
+- A `v*.*.*` tag starts the Windows and macOS desktop builds. The release job waits for both, then creates a published (non-draft) GitHub release with their updater assets; keep every package and release target scoped to this fork.
 - Linux artifacts ship `xyz.eajelly.desktop.metainfo.xml`; keep its AppStream ID and launchable aligned with `electron-builder.yml` (`xyz.eajelly.desktop`).
 - The renderer opens the server's Playlists list at `/` and after sign-in; the Home page remains at `/home`. Preserve both routes when changing startup navigation.
 
