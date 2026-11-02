@@ -475,10 +475,14 @@ axiosClient.interceptors.response.use(
                 currentServer?.userId &&
                 requestPath?.endsWith(`/users/${currentServer.userId.toLowerCase()}`),
             );
+            const isLyricsRequest =
+                error.config?.method?.toLowerCase() === 'get' &&
+                /\/audio\/[^/]+\/lyrics\/?$/.test(requestPath ?? '');
 
             // The auth outlet uses this request to detect expired Jellyfin tokens and
             // can re-authenticate with the saved password. Preserve that recovery path.
-            if (currentServer && !isUserInfoRequest) {
+            // A denied lyrics request is handled as unavailable lyrics, not a logout.
+            if (currentServer && !isUserInfoRequest && !isLyricsRequest) {
                 useAuthStore
                     .getState()
                     .actions.updateServer(currentServer.id, { credential: undefined });
