@@ -6,7 +6,7 @@ Read this before syncing `upstream` (Feishin) or changing fork-specific configur
 
 - `origin`: `eaforlife/feishin-eajelly`; `upstream`: `jeffvli/feishin`.
 - Fetch and merge from `upstream` only. Push commits, tags, and releases only to `origin`; never push or publish to Feishin or its package channels.
-- Product/package: EAJelly (`package.json`, currently version `1.3.1`). The repo is a customization fork, not a clean mirror.
+- Product/package: EAJelly (`package.json`, currently version `1.3.2`). The repo is a customization fork, not a clean mirror.
 - Keep user-facing identity, release/update endpoints, and EAJelly service behavior intact when bringing upstream changes forward.
 
 ## Customization hotspots

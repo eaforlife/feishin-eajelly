@@ -2,6 +2,10 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.3.2 - 2026-11-02
+
+- Prevented a Jellyfin Lyrics request failure from logging out the active session.
+
 ## 1.3.1 - 2026-11-02
 
 - Fixed Jellyfin session recovery so a successful saved-password re-authentication restores the active server.

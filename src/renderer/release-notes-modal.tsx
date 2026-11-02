@@ -81,6 +81,7 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'Fixed Jellyfin session recovery when saved-password sign-in is enabled.',
         'Playlists now opens in Grid view with Large cards by default.',
     ],
+    '1.3.2': ['A denied Jellyfin Lyrics request no longer signs you out of the active session.'],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 
