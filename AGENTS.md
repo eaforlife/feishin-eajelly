@@ -17,6 +17,10 @@ Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-
 
 Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
+### Fork maintenance
+
+EAJelly-specific customizations, upstream sync workflow, and dependency compatibility notes: read `docs/agents/fork-maintenance.md` before syncing from Feishin or changing fork-specific configuration/dependencies.
+
 ### Architecture
 
 Process boundaries (main / preload / renderer / remote / web, `window.api`, import rules): read `docs/agents/architecture.md` when crossing processes or builds.
