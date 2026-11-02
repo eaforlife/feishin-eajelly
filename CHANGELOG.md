@@ -2,6 +2,11 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.3.1 - 2026-11-02
+
+- Fixed Jellyfin session recovery so a successful saved-password re-authentication restores the active server.
+- Set the Playlist view to Grid with Large cards, including for existing installs.
+
 ## 1.3.0 - 2026-11-02
 
 - Added DLNA casting with grouped devices and playback controls.

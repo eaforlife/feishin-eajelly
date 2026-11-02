@@ -30,9 +30,11 @@ To identify overlap efficiently, compare the proposed upstream range against the
 ## EAJelly compatibility notes
 
 - The Jellyfin API client retries the exact EAJelly HTTPS host over HTTP only on a network error, then validates the successful response. Keep the fallback inside the common client so password and Quick Connect calls share it; `pnpm check:eajelly-fallback` protects the host matching rule.
-- The settings store is at version `36`. Its migration preserves the fork's ReplayGain/compressor defaults and adds upstream's Playlists home item for existing EAJelly installs that already advanced past upstream's prior migration version.
+- The settings store is at version `37`. Its migration preserves the fork's ReplayGain/compressor defaults, adds upstream's Playlists home item, and sets the default Playlist list to Grid with Large cards for existing installs.
+- Jellyfin's `GET /users/{id}` auth check bypasses the generic 401 logout handler so `useServerAuthenticated` can retry with a saved password. After successful re-authentication, it restores that server as current; keep this flow intact when changing auth interceptors or the auth outlet.
 - Server lock mode keeps server selection/manage actions hidden; the rescan action is limited to administrators. Preserve the upstream menu's `showMainWindow` callback and EAJelly's `xyz.eajelly.desktop` app identity when resolving main-process changes.
 - Release and update endpoints must remain on `eaforlife/feishin-eajelly`. Do not carry upstream-specific package publishing actions or identifiers into this fork.
+- Windows releases publish automatically when a `v*.*.*` tag is pushed to this fork; keep the workflow's release target and credentials scoped to `origin`.
 - Linux artifacts ship `xyz.eajelly.desktop.metainfo.xml`; keep its AppStream ID and launchable aligned with `electron-builder.yml` (`xyz.eajelly.desktop`).
 - The renderer opens the server's Playlists list at `/` and after sign-in; the Home page remains at `/home`. Preserve both routes when changing startup navigation.
 

@@ -470,14 +470,20 @@ axiosClient.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             const currentServer = useAuthStore.getState().currentServer;
+            const requestPath = error.config?.url?.split('?')[0].toLowerCase();
+            const isUserInfoRequest = Boolean(
+                currentServer?.userId &&
+                requestPath?.endsWith(`/users/${currentServer.userId.toLowerCase()}`),
+            );
 
-            if (currentServer) {
+            // The auth outlet uses this request to detect expired Jellyfin tokens and
+            // can re-authenticate with the saved password. Preserve that recovery path.
+            if (currentServer && !isUserInfoRequest) {
                 useAuthStore
                     .getState()
                     .actions.updateServer(currentServer.id, { credential: undefined });
+                authenticationFailure(currentServer);
             }
-
-            authenticationFailure(currentServer);
         }
 
         return Promise.reject(error);

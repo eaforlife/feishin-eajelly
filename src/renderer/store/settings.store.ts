@@ -1850,7 +1850,7 @@ const initialState: SettingsState = {
             },
         },
         [LibraryItem.PLAYLIST]: {
-            display: ListDisplayType.TABLE,
+            display: ListDisplayType.GRID,
             grid: {
                 itemGap: 'sm',
                 itemsPerRow: 6,
@@ -1861,7 +1861,7 @@ const initialState: SettingsState = {
                     enabledColumns: [TableColumn.TITLE],
                     pickColumns: [TableColumn.TITLE, TableColumn.SONG_COUNT],
                 }),
-                size: 'default',
+                size: 'large',
             },
             itemsPerPage: 100,
             pagination: ListPaginationType.INFINITE,
@@ -2944,10 +2944,18 @@ export const useSettingsStore = createWithEqualityFn<SettingsSlice>()(
                     });
                 }
 
+                if (version < 37) {
+                    const playlistList = state.lists?.[LibraryItem.PLAYLIST];
+                    if (playlistList) {
+                        playlistList.display = ListDisplayType.GRID;
+                        playlistList.grid.size = 'large';
+                    }
+                }
+
                 return persistedState;
             },
             name: 'store_settings',
-            version: 36,
+            version: 37,
         },
     ),
 );

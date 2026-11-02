@@ -193,6 +193,10 @@ export const useServerAuthenticated = () => {
                             };
 
                             updateServer(serverWithAuth.id, updatedServer);
+                            const restoredServer = getServerById(serverWithAuth.id);
+                            if (restoredServer) {
+                                setCurrentServer(restoredServer);
+                            }
 
                             // Fetch and update server version and features
                             try {
@@ -309,6 +313,12 @@ export const useServerAuthenticated = () => {
                 if (serverWithAuth.savePassword && localSettings) {
                     localSettings.passwordRemove(serverWithAuth.id);
                 }
+
+                updateServer(serverWithAuth.id, {
+                    credential: '',
+                    ndCredential: undefined,
+                    savePassword: false,
+                });
 
                 toast.error({
                     message: errorMessage,

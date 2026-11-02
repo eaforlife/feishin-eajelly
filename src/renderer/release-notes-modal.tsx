@@ -77,6 +77,10 @@ const RELEASE_NOTES: Record<string, string[]> = {
         'Improved server response validation and library compatibility.',
         'Playlists is now the default start page after app launch and sign-in.',
     ],
+    '1.3.1': [
+        'Fixed Jellyfin session recovery when saved-password sign-in is enabled.',
+        'Playlists now opens in Grid view with Large cards by default.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 
