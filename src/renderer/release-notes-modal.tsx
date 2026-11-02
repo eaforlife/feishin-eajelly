@@ -69,6 +69,14 @@ const RELEASE_NOTES: Record<string, string[]> = {
     ],
     '1.2.6': ['The mini player now stays above games after interacting with playback controls.'],
     '1.2.7': ['The mini player now stays above games from the first time it is opened.'],
+    '1.3.0': [
+        'Added DLNA casting with grouped devices and playback controls.',
+        'Rebuilt the mobile remote with library, playlist, queue, and radio browsing.',
+        'Added Jellyfin Quick Connect sign-in.',
+        'Added audiobook support and playback resume positions.',
+        'Improved server response validation and library compatibility.',
+        'Playlists is now the default start page after app launch and sign-in.',
+    ],
 };
 const WAIT_FOR_LOCAL_STORAGE = 1000 * 2;
 

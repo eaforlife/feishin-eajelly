@@ -2,6 +2,16 @@
 
 All notable changes to EAJelly Desktop are documented here.
 
+## 1.3.0 - 2026-11-02
+
+- Added DLNA casting with grouped devices and playback controls.
+- Rebuilt the mobile remote with library, playlist, queue, and radio browsing.
+- Added Jellyfin Quick Connect sign-in.
+- Added audiobook support and playback resume positions.
+- Improved server response validation and library compatibility.
+- Set Playlists as the default start page after app launch and sign-in.
+- Preserved EAJelly release/update routing, HTTPS fallback, and mini-player behavior through the upstream sync.
+
 ## 1.2.7 - 2026-09-05
 
 - Kept the mini player above games immediately after entering mini-player mode.

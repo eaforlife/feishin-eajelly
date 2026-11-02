@@ -1,7 +1,7 @@
 appId: xyz.eajelly.desktop
 productName: EAJelly
 artifactName: ${productName}-${version}-${os}-${arch}.${ext}
-electronVersion: 43.4.1
+electronVersion: 43.7.0
 directories:
     buildResources: assets
 files:
@@ -47,7 +47,9 @@ mac:
     icon: media/feishin.icon
     type: distribution
     hardenedRuntime: false
-    identity: '-'
+    identity: "-"
+    entitlements: build/entitlements.mac.plist
+    entitlementsInherit: build/entitlements.mac.plist
     gatekeeperAssess: false
     notarize: false
     extendInfo:

@@ -36,7 +36,11 @@ jobs:
 
             - name: Lint PR commits
               if: github.event_name == 'pull_request'
-              run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+              run: |
+                  git rev-list --first-parent --reverse '${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}' |
+                  while IFS= read -r commit; do
+                    git show -s --format=%B "$commit" | pnpm exec commitlint --verbose || exit 1
+                  done
 
             - name: Fetch pre-push tip (unreachable after force-push)
               if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
@@ -48,5 +52,8 @@ jobs:
                   if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
                     pnpm exec commitlint --last --verbose
                   else
-                    pnpm exec commitlint --from ${{ github.event.before }} --to ${{ github.event.after }} --verbose
+                    git rev-list --first-parent --reverse '${{ github.event.before }}..${{ github.event.after }}' |
+                    while IFS= read -r commit; do
+                      git show -s --format=%B "$commit" | pnpm exec commitlint --verbose || exit 1
+                    done
                   fi

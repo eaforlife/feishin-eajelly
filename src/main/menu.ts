@@ -78,9 +78,11 @@ export default class MenuBuilder {
     applicationMenu: Menu | null = null;
     developmentEnvironmentSetup = false;
     mainWindow: BrowserWindow;
+    showMainWindow: () => void;
 
-    constructor(mainWindow: BrowserWindow) {
+    constructor(mainWindow: BrowserWindow, showMainWindow: () => void) {
         this.mainWindow = mainWindow;
+        this.showMainWindow = showMainWindow;
     }
 
     buildDarwinTemplate({

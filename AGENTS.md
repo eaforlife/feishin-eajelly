@@ -21,6 +21,8 @@ Single-context: root `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
 
 EAJelly-specific customizations, upstream sync workflow, and dependency compatibility notes: read `docs/agents/fork-maintenance.md` before syncing from Feishin or changing fork-specific configuration/dependencies.
 
+EAJelly versioning: increment patch through `.99`, then roll to the next minor (for example, `1.2.99` to `1.3.0`), unless the user specifies another version.
+
 ### Architecture
 
 Process boundaries (main / preload / renderer / remote / web, `window.api`, import rules): read `docs/agents/architecture.md` when crossing processes or builds.

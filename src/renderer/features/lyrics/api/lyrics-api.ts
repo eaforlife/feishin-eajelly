@@ -32,7 +32,7 @@ export type LyricsQueryResult = {
     overrideSelection: LyricsOverride | null;
     remoteAuto: FullLyricsMetadata | null;
     selected: FullLyricsMetadata | null | StructuredLyric;
-    selectedOffsetMs: number;
+    selectedOffsetMs: null | number;
     selectedStructuredIndex: number;
     selectedSynced: boolean;
     suppressRemoteAuto: boolean;
@@ -54,7 +54,10 @@ const formatLyrics = (lyrics: string) => {
         const [, minute, sec, ms, text] = line;
         const minutes = parseInt(minute, 10);
         const seconds = parseInt(sec, 10);
-        const milis = ms?.length === 3 ? parseInt(ms, 10) : parseInt(ms, 10) * 10;
+        let milis = 0;
+        if (ms) {
+            milis = ms.length === 3 ? parseInt(ms, 10) : parseInt(ms, 10) * 10;
+        }
 
         const timeInMilis = (minutes * 60 + seconds) * 1000 + milis;
 
@@ -218,20 +221,23 @@ export async function fetchRemoteLyricsById(params: {
 
 export function getDisplayOffset(
     selected: FullLyricsMetadata | null | StructuredLyric,
-    storedOffsetMs: number,
+    storedOffsetMs: null | number,
     selectedStructuredIndex: number,
     local: FullLyricsMetadata | null | StructuredLyric[],
+    defaultOffsetMs = 0,
 ): number {
-    if (selected && 'offsetMs' in selected && selected.offsetMs !== undefined) {
+    if (selected && 'offsetMs' in selected && selected.offsetMs != null) {
         return selected.offsetMs;
     }
 
     if (Array.isArray(local) && local.length > 0) {
         const item = local[Math.min(selectedStructuredIndex, local.length - 1)];
-        return item.offsetMs ?? storedOffsetMs;
+        if (item.offsetMs != null) {
+            return item.offsetMs;
+        }
     }
 
-    return storedOffsetMs;
+    return storedOffsetMs ?? defaultOffsetMs;
 }
 
 export function hasLocalLyrics(local: FullLyricsMetadata | null | StructuredLyric[]): boolean {
@@ -247,7 +253,7 @@ const emptyResult = (): LyricsQueryResult => ({
     overrideSelection: null,
     remoteAuto: null,
     selected: null,
-    selectedOffsetMs: 0,
+    selectedOffsetMs: null,
     selectedStructuredIndex: 0,
     selectedSynced: false,
     suppressRemoteAuto: false,
@@ -278,7 +284,7 @@ export const lyricsQueries = {
                 const prev = queryClient.getQueryData<LyricsQueryResult>(lyricsKey);
                 const overrideSelection = prev?.overrideSelection ?? null;
                 const suppressRemoteAuto = prev?.suppressRemoteAuto ?? false;
-                const selectedOffsetMs = prev?.selectedOffsetMs ?? 0;
+                const selectedOffsetMs = prev?.selectedOffsetMs ?? null;
                 const preferLocalLyrics = useSettingsStore.getState().lyrics.preferLocalLyrics;
 
                 const remoteAutoPromise =
@@ -354,18 +360,11 @@ export const lyricsQueries = {
                     preferLocalLyrics,
                     selectedStructuredIndex,
                 );
-                const resultSelectedOffsetMs = getDisplayOffset(
-                    selected,
-                    selectedOffsetMs,
-                    selectedStructuredIndex,
-                    local,
-                );
-
                 return {
                     ...emptyResult(),
                     ...partial,
                     selected,
-                    selectedOffsetMs: resultSelectedOffsetMs,
+                    selectedOffsetMs,
                     selectedStructuredIndex,
                     selectedSynced,
                     suppressRemoteAuto,
